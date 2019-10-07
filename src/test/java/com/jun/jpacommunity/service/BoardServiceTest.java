@@ -8,10 +8,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.Assert.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class BoardServiceTest {
 
     @Autowired
@@ -31,16 +32,18 @@ public class BoardServiceTest {
         member.setAge(28);
 
 
-        Board board = new Board();
-        board.setMember(member);
-        board.setTitle("내일은 월요일");
-        board.setContent("준영아 힘내자!");
-
+        Board board = Board.createBoard(member,"안녕하세요","잘가");
         //when
         memberService.save(member);
         boardService.save(board);
 
+        Board findBoard = boardService.findOne(board.getId());
+        System.out.println(findBoard.getId()+" "+findBoard.getTitle()+" "+findBoard.getContent()+" "+findBoard.getMember().getName());
+        System.out.println(findBoard.getCreatedAt() +" " + findBoard.getUpdatedAt());
+
+
         //then
+
 
 
      }

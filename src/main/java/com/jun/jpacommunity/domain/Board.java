@@ -1,6 +1,8 @@
 package com.jun.jpacommunity.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
@@ -11,11 +13,11 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
@@ -36,4 +38,26 @@ public class Board {
     private Timestamp updatedAt;
 
 
+    public static Board createBoard(Member member, String title, String content){
+
+        Board board = new Board();
+        board.setMember(member);
+        board.setTitle(title);
+        board.setContent(content);
+
+        return board;
+    }
+
+    public void setMember(final Member member) {
+        this.member = member;
+
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public void setContent(final String content) {
+        this.content = content;
+    }
 }
