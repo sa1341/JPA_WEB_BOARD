@@ -3,9 +3,7 @@ package com.jun.jpacommunity.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Board {
 
     @Id
@@ -21,7 +19,7 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -38,18 +36,20 @@ public class Board {
     private Timestamp updatedAt;
 
 
-    public static Board createBoard(Member member, String title, String content){
+    public static Board createBoard(String title, String content,Member member){
 
         Board board = new Board();
-        board.setMember(member);
         board.setTitle(title);
         board.setContent(content);
+        board.setMember(member);
 
         return board;
     }
 
     public void setMember(final Member member) {
         this.member = member;
+
+        member.getBoards().add(this);
 
     }
 

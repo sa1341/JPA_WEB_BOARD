@@ -25,21 +25,22 @@ public class BoardServiceTest {
     public void connectedH2() throws Exception {
 
         //given
-        Member member = new Member();
-        member.setId("sa1341");
-        member.setPassword("djalkwnsd");
-        member.setName("임준영");
-        member.setAge(28);
+        Member member = Member.builder()
+                .name("junyoung")
+                .password("test")
+                .age(28)
+                .email("test@gmail.com")
+                .build();
 
 
-        Board board = Board.createBoard(member,"안녕하세요","잘가");
+        Board board = Board.createBoard("안녕하세요","잘가", member);
         //when
         memberService.save(member);
         boardService.save(board);
 
-        Board findBoard = boardService.findOne(board.getId());
-        System.out.println(findBoard.getId()+" "+findBoard.getTitle()+" "+findBoard.getContent()+" "+findBoard.getMember().getName());
-        System.out.println(findBoard.getCreatedAt() +" " + findBoard.getUpdatedAt());
+        //Board findBoard = boardService.findOne(board.getId());
+        //System.out.println(findBoard.getId()+" "+findBoard.getTitle()+" "+findBoard.getContent()+" "+findBoard.getMember().getName());
+        //System.out.println(findBoard.getCreatedAt() +" " + findBoard.getUpdatedAt());
 
 
         //then

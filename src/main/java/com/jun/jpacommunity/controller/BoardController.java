@@ -1,17 +1,19 @@
 package com.jun.jpacommunity.controller;
 
-import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.domain.Member;
-import com.jun.jpacommunity.dto.BoardDTO;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/board")
 public class BoardController {
 
 
@@ -20,8 +22,21 @@ public class BoardController {
     private final MemberService memberService;
 
 
+    @GetMapping({"", "/"})
+    public String board(@RequestParam(value ="Id", defaultValue = "0") Long Id, Model model){
 
-    @GetMapping("/board")
+        model.addAttribute("board", boardService.findBoardById(Id));
+        return "/board/boardForm";
+    }
+
+    @GetMapping("/list")
+    public String list(@PageableDefault Pageable pageable, Model model){
+
+        model.addAttribute("boardList", boardService.findBoardList(pageable));
+        return "/board/list";
+    }
+
+   /* @GetMapping("/board")
     public String createForm(){
         return "board/boardForm";
     }
@@ -31,21 +46,22 @@ public class BoardController {
     @PostMapping("/board")
     public String saveBoard(BoardDTO boardDTO){
 
-        Member member = new Member();
-        member.setId("sa1341");
-        member.setPassword("djalkwnsd");
-        member.setName("임준영");
-        member.setAge(28);
+        Member member = Member.builder()
+                .name("junyoung")
+                .password("test")
+                .age(28)
+                .email("test@gmail.com")
+                .build();
 
         String title ="뺑덕어멈";
         String content = "왜불러?";
 
-        Board board = Board.createBoard(member,boardDTO.getTitle(), boardDTO.getContent());
+        Board board = Board.createBoard(boardDTO.getTitle(), boardDTO.getContent(),member);
         memberService.save(member);
         boardService.save(board);
 
         return "redirect:/board";
     }
-
+*/
 
 }

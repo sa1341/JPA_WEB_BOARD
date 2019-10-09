@@ -20,11 +20,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public Member findOne(String Id){
-        return memberRepository.findOne(Id);
-    }
-
-
 
 
 }

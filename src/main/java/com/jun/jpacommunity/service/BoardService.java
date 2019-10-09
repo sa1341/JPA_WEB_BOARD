@@ -3,8 +3,13 @@ package com.jun.jpacommunity.service;
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,9 +23,20 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public Board findOne(Long Id){
-        return boardRepository.findOne(Id);
+    @Transactional
+    public Optional<Board>
+    findOne(Long Id){
+        return boardRepository.findById(Id);
     }
 
+    // 페이지 번호는 실제로 0부터 시작합니다.  getPageSize()는 실제 페이지당 데이터 수를 의미합니다.
+    public Page<Board> findBoardList(Pageable pageable){
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1, pageable.getPageSize());
+        return boardRepository.findAll(pageable);
+    }
+
+    public Board findBoardById(Long Id){
+        return boardRepository.findById(Id).orElse(new Board());
+    }
 
 }
