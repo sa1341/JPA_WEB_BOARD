@@ -1,26 +1,8 @@
 package com.jun.jpacommunity.repository;
 
 import com.jun.jpacommunity.domain.Member;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
-
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
-
-    private final EntityManager em;
-
-
-    public void save(Member member){
-        em.persist(member);
-    }
-
-    public Member findOne(String Id){
-       return em.find(Member.class, Id);
-    }
-
-
-
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    public Member findByEmail(String email);
 }

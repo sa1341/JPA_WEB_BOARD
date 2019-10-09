@@ -41,8 +41,8 @@ public class JpaMappingTest {
 
         memberRepository.save(member);
 
-        Board board = Board.createBoard(boardTestTitle,"콘텐츠", member);
-        boardRepository.save(board);
+       // Board board = Board.createBoard(boardTestTitle,"콘텐츠", member);
+        //boardRepository.save(board);
     }
 
 

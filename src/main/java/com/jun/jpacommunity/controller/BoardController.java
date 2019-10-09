@@ -24,16 +24,16 @@ public class BoardController {
 
     @GetMapping({"", "/"})
     public String board(@RequestParam(value ="Id", defaultValue = "0") Long Id, Model model){
-
+        System.out.println("왔니?");
         model.addAttribute("board", boardService.findBoardById(Id));
-        return "/board/boardForm";
+        return "board/boardForm";
     }
 
     @GetMapping("/list")
     public String list(@PageableDefault Pageable pageable, Model model){
-
+        System.out.println("왔니?");
         model.addAttribute("boardList", boardService.findBoardList(pageable));
-        return "/board/list";
+        return "board/list";
     }
 
    /* @GetMapping("/board")
