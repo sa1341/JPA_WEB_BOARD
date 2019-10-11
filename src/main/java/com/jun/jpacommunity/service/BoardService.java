@@ -2,6 +2,8 @@ package com.jun.jpacommunity.service;
 
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.repository.BoardRepository;
+import com.jun.jpacommunity.repository.BoardSearch;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +38,19 @@ public class BoardService {
     }
     */
 
+    @Transactional
     public Board findBoardById(Long Id){
         return boardRepository.findById(Id).orElse(new Board());
     }
+
+    @Transactional
+    public Page<Board> findAll(Predicate predicate, Pageable pageable){
+        return boardRepository.findAll(predicate, pageable);
+    }
+
+    public Predicate makePredicate(BoardSearch boardSearch){
+        return boardRepository.makePredicate(boardSearch);
+    }
+
 
 }

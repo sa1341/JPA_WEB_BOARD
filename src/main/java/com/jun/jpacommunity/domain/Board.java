@@ -25,10 +25,7 @@ public class Board {
 
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private BoardType boardType;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -41,18 +38,16 @@ public class Board {
     private Timestamp updatedAt;
 
 
-    public static Board createBoard(String title, String content, BoardType boardType){
+    public static Board createBoard(String title, String content, Member member){
 
         Board board = new Board();
         board.setTitle(title);
         board.setContent(content);
-        board.setBoardType(boardType);
+        board.setMember(member);
         return board;
     }
 
-    public void setBoardType(BoardType boardType) {
-        this.boardType = boardType;
-    }
+
 
     public void setMember(final Member member) {
         this.member = member;
