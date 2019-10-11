@@ -30,10 +30,11 @@ public class BoardService {
     }
 
     // 페이지 번호는 실제로 0부터 시작합니다.  getPageSize()는 실제 페이지당 데이터 수를 의미합니다.
-    public Page<Board> findBoardList(Pageable pageable){
+    /*  public Page<Board> findBoardList(Pageable pageable){
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1, pageable.getPageSize());
         return boardRepository.findAll(pageable);
     }
+    */
 
     public Board findBoardById(Long Id){
         return boardRepository.findById(Id).orElse(new Board());

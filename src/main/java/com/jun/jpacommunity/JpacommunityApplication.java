@@ -20,18 +20,29 @@ public class JpacommunityApplication {
     }
 
     // 스프링은 빈으로 생성된 메서드에 파라미터로 DI시키는 메커니즘이 존재합니다. 생성자를 통해서 의존성을 주입하는 방법이랑 유사합니다.
-    @Bean
+   @Bean
     public CommandLineRunner runner(MemberRepository memberRepository, BoardRepository boardRepository) throws Exception {
         return (args -> {
 
-            Member member = Member.builder()
-                    .email("test@gmail.com")
-                    .name("junyoung")
-                    .password("12345")
+            Member member1 = Member.builder()
+                    .email("test1@gmail.com")
+                    .name("임준영")
+                    .password("wnsdud1")
+                    .age(28)
+                    .build();
+
+            Member member2 = Member.builder()
+                    .email("test2@gmail.com")
+                    .name("박경훈")
+                    .password("12345678")
                     .age(29)
                     .build();
-            memberRepository.save(member);
 
+            memberRepository.save(member1);
+            memberRepository.save(member2);
+        });
+   }
+   /*
             // range와의 차이는 끝 개수의 포함여부 입니다.
             IntStream.rangeClosed(1, 200).forEach(index ->
 					boardRepository.save(
@@ -39,5 +50,5 @@ public class JpacommunityApplication {
 					)
             );
         });
-    }
+    }*/
 }

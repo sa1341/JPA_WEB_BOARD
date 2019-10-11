@@ -24,7 +24,7 @@ public class Member {
 
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     private int age;
@@ -33,11 +33,11 @@ public class Member {
     List<Board> boards = new ArrayList<Board>();
 
     @CreationTimestamp
-    @Column(name = "sys_creation_date")
+    @Column(name = "sys_creation_date", nullable = false, updatable = false)
     private Timestamp createdAt;
 
     @UpdateTimestamp
-    @Column(name = "sys_update_date")
+    @Column(name = "sys_update_date", nullable = false)
     private Timestamp updatedAt;
 
     @Builder
