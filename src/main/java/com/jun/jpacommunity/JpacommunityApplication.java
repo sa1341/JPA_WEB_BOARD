@@ -41,12 +41,12 @@ public class JpacommunityApplication {
             memberRepository.save(member1);
             memberRepository.save(member2);
 
-            IntStream.rangeClosed(1, 100).forEach(index -> {
+            IntStream.rangeClosed(1, 150).forEach(index -> {
                 Board board = Board.createBoard("제목" + index, "내용" + index, member1);
                 boardRepository.save(board);
             });
 
-            IntStream.rangeClosed(101, 200).forEach(index -> {
+            IntStream.rangeClosed(151, 300).forEach(index -> {
                 Board board = Board.createBoard("제목" + index, "내용" + index, member2);
                 boardRepository.save(board);
             });

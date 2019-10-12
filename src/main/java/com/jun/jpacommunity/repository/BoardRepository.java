@@ -13,7 +13,7 @@ public interface BoardRepository extends CrudRepository<Board, Long>, QuerydslPr
     // 자바 8부터 인터페이스에 디폴트 메소드가 추가가 가능해졌습니다.
     public default Predicate makePredicate(BoardSearch boardSearch) {
 
-        String type = boardSearch.getKeyword();
+        String type = boardSearch.getType();
         String keyword = boardSearch.getKeyword();
 
         // 메소드 체인형식으로 동적으로 조건절을 추가해주는 BooleanBuilder 객체 생성
@@ -22,6 +22,9 @@ public interface BoardRepository extends CrudRepository<Board, Long>, QuerydslPr
         QBoard board = QBoard.board;
 
         builder.and(board.id.gt(0));
+
+        System.out.println( "type:" + type);
+        System.out.println( "keyword:" + keyword);
 
 
         if(type == null){

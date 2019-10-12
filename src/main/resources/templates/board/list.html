@@ -5,6 +5,7 @@
     <title>Board Form</title>
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
 </head>
 <body>
 <!--header-->
@@ -45,7 +46,8 @@
     <a href="/board" class="btn btn-primary btn-block">등록</a>
 </div>
 <br/><br/><br/>
-<div id="mainHide">
+
+<div th:with="boardList=${boardList.result}" id="mainHide">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -68,8 +70,27 @@
     </table>
 </div>
 <br/>
-
 <!--/body-->
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" style="text-align:center;">
+        <div>
+        <ul class="pagination">
+            <li th:if="${boardList.prevPage}">
+                <a th:href="${boardList.prevPage.pageNumber} + 1">PREV [[${boardList.prevPage.pageNumber} + 1]]</a>
+            </li>
+            <li th:classappend="${p.pageNumber == boardList.currentPageNum - 1}?active: '' "
+                th:each="p : ${boardList.pageList}">
+                <a href="#" th:text="${p.pageNumber} + 1" ></a>
+            </li>
+            <li th:if="${boardList.nextPage}">
+                <a th:href="${boardList.nextPage.pageNumber} + 1">NEXT [[${boardList.nextPage.pageNumber} + 1]]</a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    <!-- /Pagination -->
+
+
 
 <!--footer-->
 <footer class="footer">
@@ -78,5 +99,6 @@
     </div>
 </footer>
 <!--/footer-->
+</div>
 </body>
 </html>

@@ -4,9 +4,8 @@ package com.jun.jpacommunity.service;
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.QBoard;
-import com.jun.jpacommunity.domain.enums.BoardType;
-import com.jun.jpacommunity.dto.BoardForm;
 import com.jun.jpacommunity.repository.BoardRepository;
+import com.jun.jpacommunity.repository.BoardSearch;
 import com.querydsl.core.BooleanBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.temporal.Temporal;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -100,15 +96,27 @@ public class BoardServiceTest {
          //then
       }
 
-/*
+
        @Test
-       public void 시간_출력() throws Exception {
+       public void testList2() throws Exception {
 
            //given
+           Pageable pageable = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+
+           BoardSearch boardSearch = new BoardSearch();
+           boardSearch.setType("t");
+           boardSearch.setKeyword("10");
+
+
+
            //when
+           Page<Board> result = boardRepository.findAll(boardRepository.makePredicate(boardSearch), pageable);
+           System.out.println("PAGE: " + result.getPageable());
+
+           result.getContent().forEach(board -> System.out.println("" + board.getTitle()));
 
            //then
-        }*/
+        }
 
 
 }

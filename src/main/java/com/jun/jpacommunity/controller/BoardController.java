@@ -1,6 +1,7 @@
 package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
+import com.jun.jpacommunity.dto.PageMaker;
 import com.jun.jpacommunity.dto.PageVO;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.service.BoardService;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +50,10 @@ public class BoardController {
 
         log.info("" + page);
         log.info("" + boards);
-
         log.info("" + boardSearch.getType());
         log.info("" + boardSearch.getKeyword());
 
-        model.addAttribute("boardList", boards);
+        model.addAttribute("boardList", new PageMaker<>(boards));
 
         return "board/list";
     }
