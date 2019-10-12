@@ -1,6 +1,7 @@
 package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
+import com.jun.jpacommunity.dto.BoardForm;
 import com.jun.jpacommunity.dto.PageMaker;
 import com.jun.jpacommunity.dto.PageVO;
 import com.jun.jpacommunity.repository.BoardSearch;
@@ -12,10 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -30,17 +28,19 @@ public class BoardController {
 
 
     @GetMapping({"", "/"})
-    public String board(@RequestParam(value ="Id", defaultValue = "0") Long Id, Model model){
-        System.out.println("왔니?");
-        model.addAttribute("board", boardService.findBoardById(Id));
+    public String board(@RequestParam(value ="id", defaultValue = "0") Long id, Model model){
+        log.info("" + "어 왔니?");
+
+        model.addAttribute("board", boardService.findBoardById(id));
         return "board/boardForm";
     }
 
 
-
     // 게시글 목록 호출
     @GetMapping("/list")
-    public String boardList(PageVO pageVO, Model model, @ModelAttribute BoardSearch boardSearch){
+    public String boardList(PageVO pageVO, Model model, @ModelAttribute("boardSearch") BoardSearch boardSearch){
+
+
         // 페이징 처리에 필요한 정보를 제공함.
         // 표현계층에서 정렬 방향과 정렬 대상을 처리하는 부분
         Pageable page = pageVO.makePageable(0,"id");

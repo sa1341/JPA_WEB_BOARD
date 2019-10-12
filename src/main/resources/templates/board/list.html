@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 <body>
 <!--header-->
@@ -39,66 +40,115 @@
 
 <!--body-->
 <div class="container">
-<div class="page-header">
-    <h1>게시글 목록</h1>
-</div>
-<div class="pull-right" style="width:100px;margin:10px 0;">
-    <a href="/board" class="btn btn-primary btn-block">등록</a>
-</div>
-<br/><br/><br/>
-
-<div th:with="boardList=${boardList.result}" id="mainHide">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th class="col-md-1">#</th>
-            <th class="col-md-2">제목</th>
-            <th class="col-md-5">작성자</th>
-            <th class="col-md-2">작성날짜</th>
-            <th class="col-md-2">수정날짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="board : ${boardList}">
-            <td th:text="${board.id}"></td>
-            <td><a th:href="'/board?id='+${board.id}" th:text="${board.title}"></a></td>
-            <td th:text="${board.member.name}"></td>
-            <td th:text="${#dates.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="${#dates.format(board.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<br/>
-<!--/body-->
-    <!-- Pagination -->
-    <nav aria-label="Page navigation" style="text-align:center;">
-        <div>
-        <ul class="pagination">
-            <li th:if="${boardList.prevPage}">
-                <a th:href="${boardList.prevPage.pageNumber} + 1">PREV [[${boardList.prevPage.pageNumber} + 1]]</a>
-            </li>
-            <li th:classappend="${p.pageNumber == boardList.currentPageNum - 1}?active: '' "
-                th:each="p : ${boardList.pageList}">
-                <a href="#" th:text="${p.pageNumber} + 1" ></a>
-            </li>
-            <li th:if="${boardList.nextPage}">
-                <a th:href="${boardList.nextPage.pageNumber} + 1">NEXT [[${boardList.nextPage.pageNumber} + 1]]</a>
-            </li>
-        </ul>
-        </div>
-    </nav>
-    <!-- /Pagination -->
-
-
-
-<!--footer-->
-<footer class="footer">
-    <div class="container">
-        <p>Designed by Junyoung</p>
+    <div class="page-header">
+        <h1>게시글 목록</h1>
     </div>
-</footer>
-<!--/footer-->
+    <div class="pull-right" style="width:100px;margin:10px 0;">
+        <a href="/board" class="btn btn-primary btn-block">등록</a>
+    </div>
+    <br/><br/><br/>
+
+<div class="panel-body" id="mainHide">
+    <div th:with="boardList=${boardList.result}">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="col-md-1">#</th>
+                <th class="col-md-2">제목</th>
+                <th class="col-md-5">작성자</th>
+                <th class="col-md-2">작성날짜</th>
+                <th class="col-md-2">수정날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boardList}">
+                <td th:text="${board.id}"></td>
+                <td><a th:href="'/board?id='+${board.id}" th:text="${board.title}"></a></td>
+                <td th:text="${board?.member?.name}"></td>
+                <td th:text="${#dates.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#dates.format(board.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <select id='searchType'>
+                <option>--</option>
+                <option value='t' th:selected="${boardSearch.type} =='t'" >제목</option>
+                <option value='c' th:selected="${boardSearch.type} =='c'">내용</option>
+                <option value='w' th:selected="${boardSearch.type} =='w'">작성자</option>
+            </select>
+            <input type='text' id='searchKeyword' th:value="${boardSearch.keyword}">
+            <button class="btn-primary" id='searchBtn'>Search</button>
+        </div>
+    </div>
+    <br/>
+    <!--/body-->
+
+         <!-- Pagination -->
+        <nav aria-label="Page navigation" style="text-align:center;">
+            <div>
+                <ul class="pagination">
+                    <li th:if="${boardList.prevPage}">
+                    <a th:href="${boardList.prevPage.pageNumber} + 1">PREV [[${boardList.prevPage.pageNumber} + 1]]</a>
+                    </li>
+                    <li th:classappend="${p.pageNumber == boardList.currentPageNum - 1}?active: '' "
+                        th:each="p : ${boardList.pageList}">
+                    <a th:href="${p.pageNumber} + 1" >[[${p.pageNumber} +1]]</a></li>
+                    <li th:if="${boardList.nextPage}">
+                    <a th:href="${boardList.nextPage.pageNumber} + 1">NEXT [[${boardList.nextPage.pageNumber} + 1]]</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 </div>
+
+    <!-- /Pagination -->
+    <form id='f1' th:action="@{list}" method="get">
+        <input type='hidden' name='page' th:value="${boardList.currentPageNum}">
+        <input type='hidden' name='size' th:value="${boardList.currentPage.pageSize}">
+        <input type='hidden' name='type' th:value="${boardSearch.type}">
+        <input type='hidden' name='keyword' th:value="${boardSearch.keyword}">
+    </form>
+
+
+    <!--footer-->
+        <footer class="footer">
+            <div class="container">
+                <p>Designed by Junyoung</p>
+            </div>
+    </footer>
+    <!--/footer-->
+</div>
+
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var formObj = $("#f1");
+        $(".pagination a").click(function (e) {
+            e.preventDefault();
+            formObj.find('[name="page"]').val($(this).attr('href'));
+            formObj.submit();
+        });
+
+
+        $("#searchBtn").click(function(e){
+
+            var typeStr = $("#searchType").find(":selected").val();
+            var keywordStr = $("#searchKeyword").val();
+
+            console.log(typeStr, "" , keywordStr);
+
+            formObj.find("[name='type']").val(typeStr);
+            formObj.find("[name='keyword']").val(keywordStr);
+            formObj.find("[name='page']").val("1");
+            formObj.submit();
+        });
+
+    });
+
+
+</script>
+
+
 </body>
 </html>

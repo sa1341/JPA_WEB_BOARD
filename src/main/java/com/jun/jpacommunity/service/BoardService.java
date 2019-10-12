@@ -39,8 +39,8 @@ public class BoardService {
     */
 
     @Transactional
-    public Board findBoardById(Long Id){
-        return boardRepository.findById(Id).orElse(new Board());
+    public Board findBoardById(Long id){
+        return boardRepository.findById(id).orElse(new Board());
     }
 
     @Transactional

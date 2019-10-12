@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class BoardForm {
 
+    private Long id;
+
     @NotEmpty(message = "제목을 넣으셔야 합니다.")
     private  String title;
 
