@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 
 @Entity
@@ -21,8 +22,10 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
+    @NotEmpty(message = "제목을 넣으셔야 합니다.")
     private String title;
 
+    @NotEmpty(message = "내용을 넣어주셔야 합니다.")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)

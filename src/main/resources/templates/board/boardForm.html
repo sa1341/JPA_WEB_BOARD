@@ -22,7 +22,8 @@
         <table class="table" th:object="${board}">
             <tr>
                 <th style="padding:13px 0 0 15px;">제목</th>
-                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}"/></td>
+                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}" />
+                </td>
             </tr>
             <tr>
                 <th style="padding:13px 0 0 15px;">내용</th>
@@ -81,9 +82,7 @@
     $('#update').click(function () {
         var jsonData = JSON.stringify({
             title: $('#board_title').val(),
-            content: $('#board_content').val(),
-            boardType: $('#board_type option:selected').val(),
-            createdDate: $('#board_create_date').val()
+            content: $('#board_content').val()
         });
         $.ajax({
             url: "http://localhost:8080/api/boards/" + $('#board_id').val(),

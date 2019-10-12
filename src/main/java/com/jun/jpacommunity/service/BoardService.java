@@ -52,5 +52,14 @@ public class BoardService {
         return boardRepository.makePredicate(boardSearch);
     }
 
+    @Transactional
+    public void updateBoard(Long id, Board board){
+
+        Optional<Board> optBoard = boardRepository.findById(id);
+        Board findBoard = optBoard.get();
+        findBoard.setTitle(board.getTitle());
+        findBoard.setContent(board.getContent());
+
+    }
 
 }

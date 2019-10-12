@@ -26,7 +26,7 @@ public class BoardController {
 
     private final MemberService memberService;
 
-
+    // 게시글 내용  제목으로  조회시 호출
     @GetMapping({"", "/"})
     public String board(@RequestParam(value ="id", defaultValue = "0") Long id, Model model){
         log.info("" + "어 왔니?");

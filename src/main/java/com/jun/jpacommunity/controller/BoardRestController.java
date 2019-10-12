@@ -8,7 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Optional;
 
 
 @RestController
@@ -21,7 +25,11 @@ public class BoardRestController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<?> postBoard(@RequestBody Board board){
+    public ResponseEntity<?> postBoard(@RequestBody @Valid Board board, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>("제대로 입력하세요", HttpStatus.BAD_REQUEST);
+        }
 
         log.info("" + board.getTitle());
         log.info("" + board.getContent());
@@ -29,6 +37,14 @@ public class BoardRestController {
         boardService.save(board);
 
         return new ResponseEntity<>("{}", HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> putBoard(@PathVariable("id") Long id, @RequestBody Board board){
+
+        boardService.updateBoard(id, board);
+
+        return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 
 
