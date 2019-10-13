@@ -211,12 +211,11 @@
             var replyObj;
             for(var i = 0; i < list.length; i++){
                 replyObj = list[i];
-
                 str += "<tr>" +
                     "<td>"+ replyObj.id+" </td>" +
                     "<td>"+ replyObj.content+" </td>" +
                     "<td>"+ replyObj.replier+" </td>" +
-                    "<td>"+ formatDate(replyObj.regdate)+"</td>" +
+                    "<td>"+ formatDate(replyObj.createdAt)+"</td>" +
                     "</tr>";
             }
             $("#replyTable").html(str);
@@ -227,7 +226,7 @@
             var date = new Date(timeValue);
             return  date.getFullYear()
                 + "-" + (date.getMonth()+1 >= 10?date.getMonth()+1 : '0'+ (date.getMonth()+1)  )
-                + "-" + date.getDate()
+                + "-" + date.getDate() + " " + date.getHours() +"시" + date.getMinutes() + "분"
 
         }
 
