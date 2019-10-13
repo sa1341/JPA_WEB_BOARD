@@ -46,4 +46,6 @@ public interface BoardRepository extends CrudRepository<Board, Long>, QuerydslPr
         }
         return builder;
     }
+
+
 }

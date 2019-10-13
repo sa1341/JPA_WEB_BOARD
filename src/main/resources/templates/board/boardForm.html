@@ -101,7 +101,7 @@
     });
     $('#delete').click(function () {
         $.ajax({
-            url: "http://localhost:80800/api/boards/" + $('#board_id').val(),
+            url: "http://localhost:8080/api/boards/" + $('#board_id').val(),
             type: "DELETE",
             success: function () {
                 alert('삭제 성공!');

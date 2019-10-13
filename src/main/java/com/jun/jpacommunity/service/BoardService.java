@@ -38,12 +38,11 @@ public class BoardService {
     }
     */
 
-    @Transactional
     public Board findBoardById(Long id){
         return boardRepository.findById(id).orElse(new Board());
     }
 
-    @Transactional
+
     public Page<Board> findAll(Predicate predicate, Pageable pageable){
         return boardRepository.findAll(predicate, pageable);
     }
@@ -60,6 +59,11 @@ public class BoardService {
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
 
+    }
+
+    @Transactional
+    public void deleteById(Long id){
+        boardRepository.deleteById(id);
     }
 
 }

@@ -48,4 +48,16 @@ public class BoardRestController {
     }
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBoard(@PathVariable("id") Long id){
+
+        log.info(""+ id);
+        boardService.deleteById(id);
+
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+
+
+
+
 }
