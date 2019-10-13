@@ -25,7 +25,6 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    @Transactional
     public Optional<Board>
     findOne(Long Id){
         return boardRepository.findById(Id);
@@ -67,3 +66,6 @@ public class BoardService {
     }
 
 }
+
+
+
