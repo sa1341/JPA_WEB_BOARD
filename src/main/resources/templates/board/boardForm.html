@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/normalize.css}" />
     <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
-    <script th:src="@{/js/plugins.js}"></script>
+<!--    <script th:src="@{/js/plugins.js}"></script>
     <script th:src="@{/js/main.js}"></script>-->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -21,20 +21,25 @@
     </div>
     <br/>
 
-    <input id="board_id" type="hidden" th:value="${board?.id}"/>
-    <input id="board_createdAt" type="hidden" th:value="${board?.createdAt}"/>
+    <input id="board_id" type="hidden" th:value="${boardForm?.id}"/>
+  <!--  <input id="board_createdAt" type="hidden" th:value="${board?.createdAt}"/>-->
 
 
-        <table class="table" th:object="${board}">
+        <table class="table" th:object="${boardForm}">
+            <tr>
+                <th style="padding:13px 0 0 15px;">작성자</th>
+                <td><input id="board_name" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.writer}" />
+                </td>
+            </tr>
             <tr>
                 <th style="padding:13px 0 0 15px;">제목</th>
-                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}" />
+                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.title}" />
                 </td>
             </tr>
             <tr>
                 <th style="padding:13px 0 0 15px;">내용</th>
                 <td><textarea id="board_content" class="col-md-1 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
-                              th:text="${board?.content}"></textarea><span class="help-block"></span>
+                              th:text="${boardForm?.content}"></textarea><span class="help-block"></span>
                 </td>
             </tr>
 
@@ -50,12 +55,14 @@
         <a href="/board/list" class="btn btn-default">목록으로</a>
     </div>
     <div class="pull-right">
-        <button th:if="!${board?.id}" type="button" class="btn btn-primary" id="insert">저장</button>
-        <button th:if="${board?.id}" type="button" class="btn btn-info" id="update">수정</button>
-        <button th:if="${board?.id}" type="button" class="btn btn-danger" id="delete">삭제</button>
+        <button th:if="!${boardForm?.id}" type="button" class="btn btn-primary" id="insert">저장</button>
+        <button th:if="${boardForm?.id}" type="button" class="btn btn-info" id="update">수정</button>
+        <button th:if="${boardForm?.id}" type="button" class="btn btn-danger" id="delete">삭제</button>
     </div>
 </div>
 <br/><br/>
+
+<!-- 댓글 출력하는 부분 -->
 <div class='container'>
     <table class="table table-striped table-bordered table-hover">
         <thead>
@@ -76,10 +83,9 @@
 </div>
 
 
-<!-- Modal -->
+<!-- 모달창  -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -87,19 +93,18 @@
                 <h4 class="modal-title">Modal Header</h4>
             </div>
             <div class="modal-body">
-                <label>Reply Text</label>
+                <label>댓글내용</label>
                 <input type="text" class="form-control" name='content'>
 
-                <label>REPLIER</label>
+                <label>작성자</label>
                 <input type="text" class="form-control" name='replier'>
             </div>
             <div class="modal-footer">
-                <button id='delModalBtn'class="btn btn-danger">Delete</button>
+                <button id='delModalBtn'class="btn btn-danger">삭제</button>
                 <button id='modalBtn'class="btn btn-info">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
             </div>
         </div>
-
     </div>
 </div>
 <!--  end Modal -->
@@ -112,18 +117,19 @@
 <script th:inline="javascript">
 
     $(document).ready(function (e){
+
         var mode;
-        var bno = [[${board.id}]];
+        var bno = [[${boardForm.id}]];
 
         var contentObj = $("input[name='content']");
         var replierObj = $("input[name='replier']");
-
         var rno;
 
         $("#addReplyBtn").on('click', function(){
 
+            $("#modalBtn").html("작성");
             $("#myModal").modal("show");
-            $(".modal-title").text("Add Reply");
+            $(".modal-title").text("댓글 추가");
 
             $("#delModalBtn").hide();
 
@@ -144,6 +150,8 @@
 
 
         $("#replyTable").on("click", "tr", function(e){
+
+            $("#modalBtn").html("수정");
 
             var tds = $(this).find('td');
 
@@ -188,21 +196,17 @@
 
                 var obj = {content:content, bno:bno, id:rno};
 
-
                 replyManager.update(obj, function(list){
 
                     alert("댓글이 수정되었습니다. ")
                     afterAll(list);
                 });
-
             }
-
         });
 
         (function getAllReplies(){
-
             //load replies
-            replyManager.getAll([[${board.id}]], printList);
+            replyManager.getAll([[${boardForm.id}]], printList);
         })();
 
 
@@ -227,19 +231,18 @@
             return  date.getFullYear()
                 + "-" + (date.getMonth()+1 >= 10?date.getMonth()+1 : '0'+ (date.getMonth()+1)  )
                 + "-" + date.getDate() + " " + date.getHours() +"시" + date.getMinutes() + "분"
-
         }
 
     });
-
 </script>
 
-<!--댓글 Rest API 부분-->
-<script th:if="!${board?.id}">
+<!--댓글 CRUD REST API 구현-->
+<script th:if="!${boardForm?.id}">
     $('#insert').click(function () {
         var jsonData = JSON.stringify({
             title: $('#board_title').val(),
-            content: $('#board_content').val()
+            content: $('#board_content').val(),
+            writer : $('#board_name').val()
         });
         $.ajax({
             url: "http://localhost:8080/api/boards",
@@ -260,7 +263,7 @@
         });
     });
 </script>
-<script th:if="${board?.id}">
+<script th:if="${boardForm?.id}">
     $('#update').click(function () {
         var jsonData = JSON.stringify({
             title: $('#board_title').val(),
@@ -295,11 +298,5 @@
         });
     });
 </script>
-
-
-
-
-
-
 </body>
 </html>

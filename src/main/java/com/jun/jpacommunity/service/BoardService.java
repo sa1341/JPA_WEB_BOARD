@@ -1,10 +1,13 @@
 package com.jun.jpacommunity.service;
 
 import com.jun.jpacommunity.domain.Board;
+import com.jun.jpacommunity.dto.BoardForm;
+import com.jun.jpacommunity.dto.BoardResponse;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -37,7 +41,8 @@ public class BoardService {
     }
     */
 
-    public Board findBoardById(Long id){
+    // 이 부분을 수정하자.. 해당 키값으로 찾는 게시물이 없
+    public Board findBoardById(Long id) {
         return boardRepository.findById(id).orElse(new Board());
     }
 
@@ -51,12 +56,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long id, Board board){
+    public void updateBoard(Long id, BoardForm boardForm){
 
         Optional<Board> optBoard = boardRepository.findById(id);
         Board findBoard = optBoard.get();
-        findBoard.setTitle(board.getTitle());
-        findBoard.setContent(board.getContent());
+        findBoard.updateBoard(boardForm);
 
     }
 
@@ -64,6 +68,8 @@ public class BoardService {
     public void deleteById(Long id){
         boardRepository.deleteById(id);
     }
+
+
 
 }
 

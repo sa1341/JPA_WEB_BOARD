@@ -1,6 +1,7 @@
 package com.jun.jpacommunity.domain;
 
 import com.jun.jpacommunity.domain.enums.BoardType;
+import com.jun.jpacommunity.dto.BoardForm;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,6 +23,8 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
+    private String writer;
+
     @NotEmpty(message = "제목을 넣으셔야 합니다.")
     private String title;
 
@@ -35,7 +38,6 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<Reply> replies = new ArrayList<Reply>();
 
-
     @CreationTimestamp
     @Column(name = "sys_creation_date", nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -45,16 +47,20 @@ public class Board {
     private Timestamp updatedAt;
 
 
-    public static Board createBoard(String title, String content, Member member){
-
+    public static Board createBoard(final Long id, final String writer ,final String title, final String content, final Member member){
         Board board = new Board();
-        board.setTitle(title);
-        board.setContent(content);
-        board.setMember(member);
+        board.id = id;
+        board.writer = writer;
+        board.title = title;
+        board.content = content;
+        board.member = member;
         return board;
     }
 
-
+    public void updateBoard(BoardForm boardForm){
+        this.title = boardForm.getTitle();
+        this.content = boardForm.getContent();
+    }
 
     public void setMember(final Member member) {
         this.member = member;
@@ -63,11 +69,4 @@ public class Board {
 
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    public void setContent(final String content) {
-        this.content = content;
-    }
 }

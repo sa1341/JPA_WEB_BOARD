@@ -2,6 +2,7 @@ package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.dto.BoardForm;
+import com.jun.jpacommunity.dto.BoardResponse;
 import com.jun.jpacommunity.dto.PageMaker;
 import com.jun.jpacommunity.dto.PageVO;
 import com.jun.jpacommunity.repository.BoardSearch;
@@ -30,8 +31,8 @@ public class BoardController {
     @GetMapping({"", "/"})
     public String board(@RequestParam(value ="id", defaultValue = "0") Long id, Model model){
         log.info("" + "어 왔니?");
-
-        model.addAttribute("board", boardService.findBoardById(id));
+        BoardResponse boardResponse = new BoardResponse(boardService.findBoardById(id));
+        model.addAttribute("boardForm", boardResponse);
         return "board/boardForm";
     }
 

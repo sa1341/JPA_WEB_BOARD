@@ -4,11 +4,12 @@ import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.QBoard;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 
-public interface BoardRepository extends CrudRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
+public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
 
     // 자바 8부터 인터페이스에 디폴트 메소드가 추가가 가능해졌습니다.
     public default Predicate makePredicate(BoardSearch boardSearch) {
@@ -41,7 +42,7 @@ public interface BoardRepository extends CrudRepository<Board, Long>, QuerydslPr
                 break;
 
             case "w":
-                builder.and(board.member.name.like("%" + keyword + "%"));
+                builder.and(board.writer.like("%" + keyword + "%"));
                 break;
         }
         return builder;
