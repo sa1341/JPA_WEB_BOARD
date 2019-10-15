@@ -12,6 +12,10 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    } </style>
 <body>
 
 <div th:replace="layout/header::header"></div>
@@ -28,18 +32,22 @@
         <table class="table" th:object="${boardForm}">
             <tr>
                 <th style="padding:13px 0 0 15px;">작성자</th>
-                <td><input id="board_name" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.writer}" />
+                <td><input id="board_name" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.writer}"/>
                 </td>
             </tr>
             <tr>
                 <th style="padding:13px 0 0 15px;">제목</th>
-                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.title}" />
+                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.title}"
+                           th:class="${#fields.hasErrors('title')}? 'col-md-1 form-control input-sm fieldError' : 'col-md-1 form-control input-sm' "/>
+                    <p th:if="${#fields.hasErrors('title')}"
+                       th:errors="*{title}">시바 왜안되냐고;;</p>
                 </td>
             </tr>
             <tr>
                 <th style="padding:13px 0 0 15px;">내용</th>
                 <td><textarea id="board_content" class="col-md-1 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
-                              th:text="${boardForm?.content}"></textarea><span class="help-block"></span>
+                              th:text="${boardForm?.content}"></textarea>
+                    <span class="help-block"></span>
                 </td>
             </tr>
 
@@ -94,10 +102,10 @@
             </div>
             <div class="modal-body">
                 <label>댓글내용</label>
-                <input type="text" class="form-control" name='content'>
+                <input type="text" class="form-control" name='content' id="modal_content">
 
                 <label>작성자</label>
-                <input type="text" class="form-control" name='replier'>
+                <input type="text" class="form-control" name='replier' id="modal_replier">
             </div>
             <div class="modal-footer">
                 <button id='delModalBtn'class="btn btn-danger">삭제</button>
@@ -126,6 +134,8 @@
         var rno;
 
         $("#addReplyBtn").on('click', function(){
+            $("#modal_content").val("");
+            $("#modal_replier").val("");
 
             $("#modalBtn").html("작성");
             $("#myModal").modal("show");

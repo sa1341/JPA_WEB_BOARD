@@ -42,21 +42,21 @@ public class BoardService {
     */
 
     // 이 부분을 수정하자.. 해당 키값으로 찾는 게시물이 없
-    public Board findBoardById(Long id) {
+    public Board findBoardById(final Long id) {
         return boardRepository.findById(id).orElse(new Board());
     }
 
 
-    public Page<Board> findAll(Predicate predicate, Pageable pageable){
+    public Page<Board> findAll(final Predicate predicate, final Pageable pageable){
         return boardRepository.findAll(predicate, pageable);
     }
 
-    public Predicate makePredicate(BoardSearch boardSearch){
+    public Predicate makePredicate(final BoardSearch boardSearch){
         return boardRepository.makePredicate(boardSearch);
     }
 
     @Transactional
-    public void updateBoard(Long id, BoardForm boardForm){
+    public void updateBoard(final Long id, final BoardForm boardForm){
 
         Optional<Board> optBoard = boardRepository.findById(id);
         Board findBoard = optBoard.get();
@@ -65,7 +65,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteById(Long id){
+    public void deleteById(final Long id){
         boardRepository.deleteById(id);
     }
 

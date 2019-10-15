@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.validation.constraints.NotEmpty;
-import java.sql.Timestamp;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -18,13 +17,11 @@ public class BoardForm {
 
     private Long id;
 
-    @NotEmpty(message = "작성자를 넣어주셔야 합니다")
     private String writer;
 
-    @NotEmpty(message = "제목을 넣으셔야 합니다.")
+    @NotBlank(message = "제목을 넣으셔야 합니다.")
     private  String title;
 
-    @NotEmpty(message = "내용을 넣어주셔야 합니다.")
     private  String content;
 
     private Member member;

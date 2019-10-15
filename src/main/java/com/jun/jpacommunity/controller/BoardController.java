@@ -1,10 +1,7 @@
 package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.dto.BoardForm;
-import com.jun.jpacommunity.dto.BoardResponse;
-import com.jun.jpacommunity.dto.PageMaker;
-import com.jun.jpacommunity.dto.PageVO;
+import com.jun.jpacommunity.dto.*;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
@@ -14,7 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -26,6 +26,29 @@ public class BoardController {
     private final BoardService boardService;
 
     private final MemberService memberService;
+
+
+    //폼 검증용 뷰잉
+    @GetMapping("/valid")
+    public String createValidForm(Model model){
+
+        model.addAttribute("boardValidForm", new BoardValidForm());
+        return "board/boardValidForm";
+    }
+
+
+    @PostMapping("/valid")
+    public String boardValid(@Valid BoardValidForm boardValidForm, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            return "board/boardValidForm";
+        }
+
+
+        return "redirect:/board";
+
+    }
+
 
     // 게시글 내용  제목으로  조회시 호출
     @GetMapping({"", "/"})
