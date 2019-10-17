@@ -28,4 +28,17 @@ Lombok이 반드시 설치 되있어야 합니다.
 * [QueryDsl 설정: [QuertDsl] build.gradle 파일에 QueryDSL 설정](https://jojoldu.tistory.com/372)
 * [QueryDsl 설정: [QuertDsl] pom.xml 파일에 QueryDSL 설정](https://webcoding-start.tistory.com/8?category=812502)
 
+#### 5. 실행
+
+```java
+id 'io.spring.dependency-management' version '1.0.8.RELEASE' 
+```
+
+```
+프로젝트 경로에 들어간 후
+./gradleew bootjar
+java -jar '실행파일명'.jar 수행
+```
+
+
 
