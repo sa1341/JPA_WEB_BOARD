@@ -22,13 +22,18 @@
 - QueryDsl
 - Postman(REST API 호출용)
 
-#### 4. 프로젝트 실행환경
+#### 4. 프로젝트 목차
+
+1. [step-01 : 프로젝트 설계 및 프로젝트 생성](https://github.com/sa1341/jpacommunity/blob/master/doc/board-1.md)
+
+
+#### 5. 프로젝트 실행환경
 Lombok이 반드시 설치 되있어야 합니다.
 * [IntellJ 설치 : [lombok] IntelliJ에 lombok(롬복) 설치](https://abettercode.tistory.com/72)
 * [QueryDsl 설정: [QuertDsl] build.gradle 파일에 QueryDSL 설정](https://jojoldu.tistory.com/372)
 * [QueryDsl 설정: [QuertDsl] pom.xml 파일에 QueryDSL 설정](https://webcoding-start.tistory.com/8?category=812502)
 
-#### 5. 실행
+#### 6. 실행
 
 ```java
 id 'io.spring.dependency-management' version '1.0.8.RELEASE' 
