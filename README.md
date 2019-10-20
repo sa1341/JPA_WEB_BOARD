@@ -25,7 +25,7 @@
 #### 4. 프로젝트 목차
 
 1. [step-01 : 프로젝트 설계 및 프로젝트 생성](https://github.com/sa1341/jpacommunity/blob/master/doc/board-1.md)
-
+2. [step-02 : 게시글 및 댓글 엔티티 정의](https://github.com/sa1341/jpacommunity/blob/master/doc/board-2.md)
 
 #### 5. 프로젝트 실행환경
 Lombok이 반드시 설치 되있어야 합니다.
