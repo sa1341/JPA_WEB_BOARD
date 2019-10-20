@@ -15,6 +15,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Long>, QuerydslPre
     public List<Reply> getRepliesOfBoard(Board board);
 
 
-
 }
 

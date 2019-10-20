@@ -5,11 +5,15 @@ import com.jun.jpacommunity.domain.QBoard;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 
 public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
+
+    @Query("select count(r) from Board b " + " LEFT OUTER JOIN b.replies r where b.id > 0")
+    public int getReplyCount();
 
     // 자바 8부터 인터페이스에 디폴트 메소드가 추가가 가능해졌습니다.
     public default Predicate makePredicate(BoardSearch boardSearch) {

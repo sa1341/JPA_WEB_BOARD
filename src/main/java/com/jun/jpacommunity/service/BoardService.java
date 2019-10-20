@@ -41,9 +41,10 @@ public class BoardService {
     }
     */
 
-    // 이 부분을 수정하자.. 해당 키값으로 찾는 게시물이 없
+    // 게시글 제목을 클릭하거나 게시글 등록버튼을 눌렀을때 호출되는 메소
     public Board findBoardById(final Long id) {
-        return boardRepository.findById(id).orElse(new Board());
+
+        return boardRepository.findById(id).orElse(Board.makeBoardForm());
     }
 
 

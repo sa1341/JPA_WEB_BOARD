@@ -40,7 +40,7 @@
                 <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.title}"
                            th:class="${#fields.hasErrors('title')}? 'col-md-1 form-control input-sm fieldError' : 'col-md-1 form-control input-sm' "/>
                     <p th:if="${#fields.hasErrors('title')}"
-                       th:errors="*{title}">시바 왜안되냐고;;</p>
+                       th:errors="*{title}">Error Message</p>
                 </td>
             </tr>
             <tr>

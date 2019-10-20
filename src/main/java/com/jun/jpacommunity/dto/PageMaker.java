@@ -25,6 +25,7 @@ public class PageMaker<T> {
 
     private List<Pageable> pageList;
 
+    private int replyCount;
 
     public PageMaker(Page<T> result) {
         this.result = result;
@@ -36,7 +37,6 @@ public class PageMaker<T> {
         this.totalPageNum = result.getTotalPages();
 
         this.pageList = new ArrayList<>();
-
         calcPages();
     }
 
