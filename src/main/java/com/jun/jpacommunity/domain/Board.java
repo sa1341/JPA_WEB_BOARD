@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = {"replies", "member"})
 public class Board {
 
@@ -26,16 +26,18 @@ public class Board {
     private String writer;
 
     @NotEmpty(message = "제목을 넣으셔야 합니다.")
+    @Column(nullable = false)
     private String title;
 
     @NotEmpty(message = "내용을 넣어주셔야 합니다.")
+    @Column(length = 500)
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Reply> replies = new ArrayList<Reply>();
 
     @CreationTimestamp
@@ -47,9 +49,16 @@ public class Board {
     private Timestamp updatedAt;
 
 
-    public static Board createBoard(final Long id, final String writer ,final String title, final String content, final Member member){
+
+    public static Board makeBoardForm(){
+            Board boardForm = new Board();
+            return boardForm;
+    }
+
+
+    public static Board createBoard(final String writer ,final String title, final String content, final Member member){
+
         Board board = new Board();
-        board.id = id;
         board.writer = writer;
         board.title = title;
         board.content = content;
@@ -57,6 +66,7 @@ public class Board {
         return board;
     }
 
+    // 게시글 업데이트를 수행하는 로직
     public void updateBoard(BoardForm boardForm){
         this.title = boardForm.getTitle();
         this.content = boardForm.getContent();
@@ -66,7 +76,7 @@ public class Board {
         this.member = member;
 
         member.getBoards().add(this);
-
     }
+
 
 }

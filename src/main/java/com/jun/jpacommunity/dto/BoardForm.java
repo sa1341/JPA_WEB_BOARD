@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "member")
 public class BoardForm {
 
@@ -28,7 +28,7 @@ public class BoardForm {
 
 
     public Board toEntity(){
-        Board board = Board.createBoard(this.id, this.writer ,this.title, this.content, this.member);
+        Board board = Board.createBoard(this.writer ,this.title, this.content, this.member);
         return board;
     }
 

@@ -38,23 +38,21 @@ public class ReplyRestController {
 
     // 댓글 등록 회후 게시글 목록 조회
     @PostMapping("/{bno}")
-    public ResponseEntity<List<Reply>> addReply(@PathVariable("bno") Long bno, @RequestBody Reply reply) {
+    public ResponseEntity<List<Reply>> addReply(@PathVariable("bno") final Long bno, @RequestBody final Reply reply) {
 
         log.info("addReply");
         log.info("bno: " + bno);
-
         log.info("REPLY: " + reply);
 
         Board findBoard = boardService.findBoardById(bno);
         reply.setBoard(findBoard);
-
         replyService.save(reply);
 
         return new ResponseEntity<>(getListByBoard(findBoard), HttpStatus.CREATED);
     }
 
     // 게시글에 대한 댓글 목록 조회
-    public List<Reply> getListByBoard(Board board) throws RuntimeException{
+    public List<Reply> getListByBoard(final Board board) throws RuntimeException{
 
         log.info("getListByBoard...." + board);
 
@@ -63,7 +61,7 @@ public class ReplyRestController {
 
     // 게시글에 대한 댓글 수
     @PutMapping("/{bno}")
-    public ResponseEntity<List<Reply>> updateReply(@PathVariable("bno") Long bno, @RequestBody Reply reply){
+    public ResponseEntity<List<Reply>> updateReply(@PathVariable("bno") final Long bno, @RequestBody final Reply reply){
 
         log.info("update reply: " + reply);
 
@@ -78,7 +76,7 @@ public class ReplyRestController {
 
     // 댓글 삭제 후 게시글의 댓글 갱신
     @DeleteMapping("/{bno}/{rno}")
-    public ResponseEntity<List<Reply>> deleteReply(@PathVariable("bno") Long bno, @PathVariable("rno") Long rno){
+    public ResponseEntity<List<Reply>> deleteReply(@PathVariable("bno") final Long bno, @PathVariable("rno") final Long rno){
 
         log.info("delete reply: " + rno);
         replyService.deleteReplyById(rno);

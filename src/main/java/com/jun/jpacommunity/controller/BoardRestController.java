@@ -27,7 +27,7 @@ public class BoardRestController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<?> postBoard(@RequestBody @Valid BoardForm boardForm, BindingResult bindingResult){
+    public ResponseEntity<?> postBoard(@RequestBody @Valid final BoardForm boardForm, final BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>("제대로 입력하세요", HttpStatus.BAD_REQUEST);
@@ -43,7 +43,7 @@ public class BoardRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> putBoard(@PathVariable("id") Long id, @RequestBody BoardForm boardForm){
+    public ResponseEntity<?> putBoard(@PathVariable("id") final Long id, @RequestBody final BoardForm boardForm){
 
         boardService.updateBoard(id, boardForm);
 
@@ -52,7 +52,7 @@ public class BoardRestController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBoard(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteBoard(@PathVariable("id") final Long id){
 
         log.info(""+ id);
         boardService.deleteById(id);

@@ -24,7 +24,9 @@ public class JpacommunityApplication {
     public CommandLineRunner runner(MemberRepository memberRepository, BoardRepository boardRepository) throws Exception {
         return (args) -> {
 
-            Member member1 = Member.builder()
+
+
+         Member member1 = Member.builder()
                     .email("test1@gmail.com")
                     .name("임준영")
                     .password("wnsdud1")
@@ -41,10 +43,16 @@ public class JpacommunityApplication {
             memberRepository.save(member1);
             memberRepository.save(member2);
 
-      /*      IntStream.rangeClosed(1, 150).forEach(index -> {
-                Board board = Board.createBoard("제목" + index, "내용" + index, member1);
+            IntStream.rangeClosed(1, 15).forEach(index -> {
+                Board board = Board.createBoard(member1.getName(), "제목" + index, "내용" + index, member1);
                 boardRepository.save(board);
-            });*/
+            });
+
+            IntStream.rangeClosed(16, 30).forEach(index -> {
+                Board board = Board.createBoard(member2.getName(), "제목" + index, "내용" + index, member2);
+                boardRepository.save(board);
+            });
+
 
         };
     }
