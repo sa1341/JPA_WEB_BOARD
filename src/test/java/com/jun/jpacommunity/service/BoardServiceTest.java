@@ -4,8 +4,10 @@ package com.jun.jpacommunity.service;
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.QBoard;
+import com.jun.jpacommunity.domain.Reply;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
+import com.jun.jpacommunity.repository.ReplyRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +17,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,7 +41,11 @@ public class BoardServiceTest {
     @Autowired
     BoardRepository boardRepository;
 
+    @Autowired
+    ReplyRepository replyRepository;
+
     @Test
+    @Rollback(false)
     public void connectedH2() throws Exception {
 
         //given
@@ -43,43 +56,66 @@ public class BoardServiceTest {
                 .email("test@gmail.com")
                 .build();
 
+        memberService.save(member);
 
-        //BoardForm boardForm = new BoardForm("빡센하루","내일도 화이팅", BoardType.free);
-       // Board board = boardForm.toEntity();
-        //board.setMember(member);
+        Board board = Board.createBoard(member.getName(), "제목" + 1, "내용" + 1, member);
+        boardRepository.save(board);
+
+        Reply reply1 = new Reply();
+        reply1.setContent("내용" + 1);
+        reply1.setReplier("작성자" + 1);
+        reply1.setBoard(board);
+
+        Reply reply2 = new Reply();
+        reply2.setContent("내용" + 2);
+        reply2.setReplier("작성자" + 2);
+        reply2.setBoard(board);
+
+        //board.getReplies().add(reply1);
+        //board.getReplies().add(reply2);
 
         //when
-        memberService.save(member);
-        //boardService.save(board);
+        replyRepository.save(reply1);
+        replyRepository.save(reply2);
 
-        //Board findBoard = boardService.findOne(board.getId());
-        //System.out.println(findBoard.getId()+" "+findBoard.getTitle()+" "+findBoard.getContent()+" "+findBoard.getMember().getName());
-        //System.out.println(findBoard.getCreatedAt() +" " + findBoard.getUpdatedAt());
+        Optional<Board> optBoard = boardRepository.findById(board.getId());
+        Board findBoard = optBoard.get();
 
+        List<Reply> replies = findBoard.getReplies();
+
+        System.out.println(findBoard);
+        System.out.println(findBoard.getReplies().getClass());
+
+        for(Reply reply : replies){
+            System.out.println(reply.getId() +" " + reply.getContent() +" " + reply.getReplier());
+        }
+
+        System.out.println(boardRepository.getReplyCount(findBoard.getId()));
 
         //then
+        assertThat(findBoard.getTitle(), is("제목1"));
 
-     }
+    }
 
-     @Test
-     public void 검색_쿼리수행() throws Exception {
+    @Test
+    public void 검색_쿼리수행() throws Exception {
 
-         //given
-         String title = "제목200";
+        //given
+        String title = "제목200";
 
-         BooleanBuilder builder = new BooleanBuilder();
+        BooleanBuilder builder = new BooleanBuilder();
 
-         QBoard board = QBoard.board;
-         if(title.equals("제목200")){
-            builder.and(board.title.like("%" + title +"%"));
-         }
+        QBoard board = QBoard.board;
+        if (title.equals("제목200")) {
+            builder.and(board.title.like("%" + title + "%"));
+        }
 
-         builder.and(board.id.gt(0));
-         Pageable pageable = PageRequest.of(0, 10);
+        builder.and(board.id.gt(0));
+        Pageable pageable = PageRequest.of(0, 10);
 
-         Page<Board> boards = boardRepository.findAll(builder, pageable);
+        Page<Board> boards = boardRepository.findAll(builder, pageable);
 
-         System.out.println(boards);
+        System.out.println(boards);
         /* Page<Board> result = boardService.findAll(pageable);
 
          System.out.println("PAGE SIZE: " + result.getSize());
@@ -90,33 +126,35 @@ public class BoardServiceTest {
          List<Board> list = result.getContent();
 
          list.forEach(b -> System.out.println(b));*/
-         //when
+        //when
 
 
-         //then
-      }
+        //then
+    }
 
 
-       @Test
-       public void testList2() throws Exception {
+    @Test
+    public void testList2() throws Exception {
 
-           //given
-           Pageable pageable = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
+        //given
+        Pageable pageable = PageRequest.of(0, 20, Sort.Direction.DESC, "id");
 
-           BoardSearch boardSearch = new BoardSearch();
-           boardSearch.setType("t");
-           boardSearch.setKeyword("10");
+        BoardSearch boardSearch = new BoardSearch("t", "10");
 
 
+        //when
+        Page<Board> result = boardRepository.findAll(boardRepository.makePredicate(boardSearch), pageable);
+        System.out.println("PAGE: " + result.getPageable());
 
-           //when
-           Page<Board> result = boardRepository.findAll(boardRepository.makePredicate(boardSearch), pageable);
-           System.out.println("PAGE: " + result.getPageable());
+        result.getContent().forEach(board -> System.out.println("" + board.getTitle()));
 
-           result.getContent().forEach(board -> System.out.println("" + board.getTitle()));
+        //then
+    }
 
-           //then
-        }
+
+
+
+
 
 
 }

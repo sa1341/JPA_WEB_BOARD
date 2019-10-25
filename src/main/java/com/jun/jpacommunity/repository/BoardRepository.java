@@ -12,8 +12,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
 
-    @Query("select count(r) from Board b " + " LEFT OUTER JOIN b.replies r where b.id > 0")
-    public int getReplyCount();
+    @Query("select count(r) from Board b " + " JOIN b.replies r where b.id = ?1")
+    public int getReplyCount(Long count);
 
     // 자바 8부터 인터페이스에 디폴트 메소드가 추가가 가능해졌습니다.
     public default Predicate makePredicate(BoardSearch boardSearch) {

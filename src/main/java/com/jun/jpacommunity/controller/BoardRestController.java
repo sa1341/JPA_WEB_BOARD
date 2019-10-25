@@ -3,7 +3,6 @@ package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.dto.BoardForm;
-import com.jun.jpacommunity.dto.BoardResponse;
 import com.jun.jpacommunity.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 
 @RestController

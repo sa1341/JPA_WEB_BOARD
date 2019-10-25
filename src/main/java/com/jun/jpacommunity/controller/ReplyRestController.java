@@ -25,6 +25,7 @@ public class ReplyRestController {
 
     private final BoardService boardService;
 
+    //게시글 상세 조회시 해당 게시글과 연관관계를 가진 댓글들을 조회
     @GetMapping("/{bno}")
     public ResponseEntity<List<Reply>> getReplies(@PathVariable("bno") Long bno){
 

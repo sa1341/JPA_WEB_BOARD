@@ -1,14 +1,14 @@
 package com.jun.jpacommunity.repository;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class BoardSearch {
 
-    private String type;
-    private String keyword;
+    private final String type;
+    private final String keyword;
 
 
 
