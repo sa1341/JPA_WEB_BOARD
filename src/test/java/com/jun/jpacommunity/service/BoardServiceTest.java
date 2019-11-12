@@ -44,7 +44,7 @@ public class BoardServiceTest {
     @Autowired
     ReplyRepository replyRepository;
 
-    @Test
+   /* @Test
     @Rollback(false)
     public void connectedH2() throws Exception {
 
@@ -95,7 +95,7 @@ public class BoardServiceTest {
         //then
         assertThat(findBoard.getTitle(), is("제목1"));
 
-    }
+    }*/
 
     @Test
     public void 검색_쿼리수행() throws Exception {

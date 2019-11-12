@@ -43,8 +43,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile("com.querydsl:querydsl-jpa") // querydsl
 	compile("com.querydsl:querydsl-apt") // querydsl
-
+	compile('org.springframework.boot:spring-boot-starter-security')
 }
+
 
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 def querydslSrcDir = 'src/main/generated'

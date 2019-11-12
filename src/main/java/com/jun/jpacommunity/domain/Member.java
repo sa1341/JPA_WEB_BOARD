@@ -11,18 +11,19 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@ToString(exclude = "boards")
 public class Member {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long id;
+    private String uid;
+
+    private String upw;
 
     private String name;
-
-    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -32,6 +33,10 @@ public class Member {
     @OneToMany(mappedBy = "member")
     List<Board> boards = new ArrayList<Board>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "member")
+    private List<MemberRole> roles;
+
     @CreationTimestamp
     @Column(name = "sys_creation_date", nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -40,11 +45,5 @@ public class Member {
     @Column(name = "sys_update_date", nullable = false)
     private Timestamp updatedAt;
 
-    @Builder
-    public Member(String name, String password, String email, int age) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.age = age;
-    }
+
 }

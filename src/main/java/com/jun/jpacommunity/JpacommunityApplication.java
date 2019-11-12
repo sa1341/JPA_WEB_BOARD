@@ -20,7 +20,7 @@ public class JpacommunityApplication {
     }
 
     // 스프링은 빈으로 생성된 메서드에 파라미터로 DI시키는 메커니즘이 존재합니다. 생성자를 통해서 의존성을 주입하는 방법이랑 유사합니다.
-    @Bean
+    /*@Bean
     public CommandLineRunner runner(MemberRepository memberRepository, BoardRepository boardRepository) throws Exception {
         return (args) -> {
 
@@ -55,5 +55,5 @@ public class JpacommunityApplication {
 
 
         };
-    }
+    }*/
 }
