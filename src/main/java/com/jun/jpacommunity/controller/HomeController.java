@@ -15,8 +15,6 @@ public class HomeController {
         return "board/form";
     }
 
-
-
     @RequestMapping("/index")
     public String index(){
 

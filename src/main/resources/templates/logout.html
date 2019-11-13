@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>Thymeleaf3</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+<form method="post">
+   <h3>Logout</h3>
+    <input type="hidden" th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}" />
+    <button type="submit" class="btn-primary">LogOut</button>
+</form>
+
+
+</body>
+</html>

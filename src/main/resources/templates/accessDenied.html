@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>Thymeleaf3</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="alert alert-danger" role="alert">
+
+            <h2>Sorry, you do not have permission to view this page.</h2>
+            Click Login at <a th:href="@{/login}">here</a>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
