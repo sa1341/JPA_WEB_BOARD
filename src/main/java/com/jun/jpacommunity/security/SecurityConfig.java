@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -32,8 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       log.info("security config.......");
 
 
-      // 웹과 관련된 다양한 보안 설정을 걸우주는 역할을 합니다.
-      http.authorizeRequests().antMatchers("/guest/**").permitAll();
+      // 웹과 관련된 다양한 보안 설정을 걸어주는 역할을 합니다.
+      http.authorizeRequests().antMatchers("/guest/**").permitAll()
+              .antMatchers("/board/list").permitAll()
+              .antMatchers("/board").hasRole("BASIC");
+
 
       // authorizeRequests()는 시큐리티 처리에 HttpServletRequest를 이용합니다.
       http.authorizeRequests().antMatchers("/manager/**").hasRole("MANAGER");
@@ -49,7 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // 로그아웃시에 세션 무효화, 스프링 시큐리티는 웹을 HttpSession 방식이기 때문에 브라우저가 완전히 종료되면, 로그인한 정보를 잃게 됩니다. 브라우저를 종료하지않을시에.. 로그아웃으로 무효화시킵니다.
       http.logout().logoutUrl("/logout").invalidateHttpSession(true);
       http.userDetailsService(jpaUserService);
+      http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
+/*
+      http.csrf().disable();
+*/
 
     }
 

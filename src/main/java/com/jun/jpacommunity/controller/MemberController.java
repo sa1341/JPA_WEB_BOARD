@@ -24,6 +24,7 @@ public class MemberController {
 
     }
 
+    //포스트 백 : 자기자신한테 요청을 하는 경우 form 태그에서 action 값이 생략되어 있습니다.
     @PostMapping("/join")
     public String joinPost(@ModelAttribute("member") Member member){
 

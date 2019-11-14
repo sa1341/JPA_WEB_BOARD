@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Board Form</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/normalize.css}" />
@@ -254,14 +256,18 @@
             content: $('#board_content').val(),
             writer : $('#board_name').val()
         });
+        var headers = {};
+        var csrfTocken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        headers[csrfHeader] = csrfTocken;
+
         $.ajax({
             url: "http://localhost:8080/api/boards",
             type: "POST",
             data: jsonData,
             contentType: "application/json",
-            headers: {
-                "Authorization": "Basic " + btoa("havi" + ":" + "test")
-            },
+            headers: headers,
             dataType: "json",
             success: function () {
                 alert('저장 성공!');

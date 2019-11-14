@@ -34,7 +34,7 @@ public class MemberTest {
             Member member = new Member();
             member.setUid("user" + i);
             member.setUpw("pw" + i);
-            member.setName("사용자" + i);
+            member.setUname("사용자" + i);
             member.setAge(28);
             member.setEmail("a7900" + i + "@gm.com");
 

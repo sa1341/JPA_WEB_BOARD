@@ -20,11 +20,13 @@ public class JpaSecurityUser extends User {
 
         super(member.getUid(), member.getUpw(),makeGrantedAuthority(member.getRoles()));
 
+        this.member = member;
     }
 
     public JpaSecurityUser(String username, String password, Collection<? extends GrantedAuthority> authorities){
 
         super(username, password, authorities);
+
     }
 
 
