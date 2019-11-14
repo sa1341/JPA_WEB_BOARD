@@ -7,7 +7,7 @@ var replyManager = (function(){
 
     };
 
-    var add = function(obj, callback){
+    var add = function(obj, headers, callback){
 
         console.log("add....");
 
@@ -17,11 +17,12 @@ var replyManager = (function(){
             data:JSON.stringify(obj),
             dataType:'json',
             contentType: "application/json",
+            headers: headers,
             success:callback
         });
     };
 
-    var update = function(obj, callback){
+    var update = function(obj, headers, callback){
         console.log("update.......");
 
         $.ajax({
@@ -30,12 +31,13 @@ var replyManager = (function(){
             dataType:'json',
             data: JSON.stringify(obj),
             contentType: "application/json",
+            headers: headers,
             success:callback
         });
 
     };
 
-    var remove = function(obj, callback){
+    var remove = function(obj, headers, callback){
 
         console.log("remove........");
 
@@ -44,6 +46,7 @@ var replyManager = (function(){
             url: '/api/replies/'+ obj.bno+"/" + obj.rno,
             dataType:'json',
             contentType: "application/json",
+            headers: headers,
             success:callback
         });
     };

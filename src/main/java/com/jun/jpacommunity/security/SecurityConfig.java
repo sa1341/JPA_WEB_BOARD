@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // 로그아웃시에 세션 무효화, 스프링 시큐리티는 웹을 HttpSession 방식이기 때문에 브라우저가 완전히 종료되면, 로그인한 정보를 잃게 됩니다. 브라우저를 종료하지않을시에.. 로그아웃으로 무효화시킵니다.
       http.logout().logoutUrl("/logout").invalidateHttpSession(true);
       http.userDetailsService(jpaUserService);
-      http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
 /*
       http.csrf().disable();
@@ -69,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-
         auth.userDetailsService(jpaUserService).passwordEncoder(passwordEncoder());
     }
 
