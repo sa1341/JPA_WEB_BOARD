@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Board Form</title>
     <meta name="_csrf" th:content="${_csrf.token}"/>
@@ -29,7 +30,9 @@
 
     <input id="board_id" type="hidden" th:value="${boardForm?.id}"/>
   <!--  <input id="board_createdAt" type="hidden" th:value="${board?.createdAt}"/>-->
-
+    <div th:with="member=${#authentication}">
+        <input class="form-control" name="writer" th:value="${member.name}" readonly="readonly" />
+    </div>
 
         <table class="table" th:object="${boardForm}">
             <tr>

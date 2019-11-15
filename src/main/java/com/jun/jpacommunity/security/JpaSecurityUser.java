@@ -39,4 +39,7 @@ public class JpaSecurityUser extends User {
         return list;
     }
 
+    public Member getMember() {
+        return member;
+    }
 }
