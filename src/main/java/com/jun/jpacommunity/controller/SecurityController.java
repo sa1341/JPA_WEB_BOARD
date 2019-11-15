@@ -35,9 +35,10 @@ public class SecurityController {
         System.out.println(user.getUsername());
         */
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(userDetails.getUsername());
         JpaSecurityUser user = (JpaSecurityUser) userDetails;
         System.out.println(user.getMember().getEmail());
+
+
         return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
     }
 }
