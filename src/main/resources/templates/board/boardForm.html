@@ -31,7 +31,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <input id="board_id" type="hidden" th:value="${boardForm?.id}"/>
   <!--  <input id="board_createdAt" type="hidden" th:value="${board?.createdAt}"/>-->
     <div th:with="member=${#authentication}">
-        <input class="form-control" name="writer" th:value="${member.name}" readonly="readonly" />
+        <input class="form-control" name="writer" th:value="${member.principal.member.uname}" readonly="readonly" />
     </div>
 
         <table class="table" th:object="${boardForm}">

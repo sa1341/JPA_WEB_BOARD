@@ -6,6 +6,7 @@ import com.jun.jpacommunity.security.JpaSecurityUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +23,7 @@ public class SecurityController {
 
 
     @GetMapping("/security")
-    public ResponseEntity<String> currentUserName(Principal principal){
-
+    public ResponseEntity<String> currentUserName(){
 
         /* Spring Security를 이용하여 사용자의 정보를 찾는 방법
         1.
@@ -34,12 +34,21 @@ public class SecurityController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(user.getUsername());
         */
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        JpaSecurityUser user = (JpaSecurityUser) userDetails;
-        System.out.println(user.getMember().getEmail());
+
+        JpaSecurityUser user = (JpaSecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member member = user.getMember();
 
 
-        return new ResponseEntity<>(principal.getName(), HttpStatus.OK);
+        return new ResponseEntity<>(member.getUname(), HttpStatus.OK);
     }
+
+    /*@GetMapping("/security2")
+    public ResponseEntity<String> currentEmail(Authentication authentication) {
+
+        String name = authentication.getPrincipal().
+
+
+        return null;
+    }*/
 }
 

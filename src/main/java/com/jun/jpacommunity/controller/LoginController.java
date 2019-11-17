@@ -23,6 +23,11 @@ public class LoginController {
         log.info("logout!!!");
     }
 
+    @GetMapping("/loginForm")
+    public void loginForm(){
+        log.info("loginForm!");
+    }
+
 
 
 }

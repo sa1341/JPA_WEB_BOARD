@@ -2,6 +2,7 @@ package com.jun.jpacommunity.security;
 
 import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.MemberRole;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class JpaSecurityUser extends User {
 
     private static final String ROLE_PREFIX = "ROLE_";
@@ -39,7 +41,4 @@ public class JpaSecurityUser extends User {
         return list;
     }
 
-    public Member getMember() {
-        return member;
-    }
 }
