@@ -21,5 +21,8 @@ public class MemberService {
     }
 
 
+    public Member findById(String username){
+        return memberRepository.findById(username).filter(m -> m != null).get();
+    }
 
 }

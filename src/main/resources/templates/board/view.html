@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Board Form</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/normalize.css}" />
+    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <!--    <script th:src="@{/js/plugins.js}"></script>
+        <script th:src="@{/js/main.js}"></script>-->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    } </style>
+<body>
+
+<div th:replace="layout/header::header"></div>
+<div class="container">
+    <div class="page-header">
+        <h1>게시글 등록</h1>
+    </div>
+    <br/>
+
+    <input id="board_id" type="hidden" th:value="${boardForm?.id}"/>
+    <!--  <input id="board_createdAt" type="hidden" th:value="${board?.createdAt}"/>-->
+
+    <table class="table" th:object="${boardForm}">
+        <tr>
+            <td>
+                <input id="board_name" type="hidden" th:value="${boardForm.writer}"/>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:13px 0 0 15px;">작성자</th>
+            <td>
+                <input id="board_writer" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.writer}" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:13px 0 0 15px;">제목</th>
+            <td>
+                <input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${boardForm?.title}"
+                       th:class="${#fields.hasErrors('title')}? 'col-md-1 form-control input-sm fieldError' : 'col-md-1 form-control input-sm' "/>
+                <p th:if="${#fields.hasErrors('title')}"
+                   th:errors="*{title}">Error Message</p>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:13px 0 0 15px;">내용</th>
+            <td><textarea id="board_content" class="col-md-1 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
+                          th:text="${boardForm?.content}"></textarea>
+                <span class="help-block"></span>
+            </td>
+        </tr>
+
+        <!--<div class="form-group">
+             <label>Writer</label> <input class="form-control" name="writer" th:value="${vo.writer}" />
+         </div>
+         <button type="submit" class="btn btn-default">Submit Button</button>
+         <button type="reset" class="btn btn-primary">Reset Button</button>-->
+    </table>
+
+
+    <div class="pull-left">
+        <a href="/board/list" class="btn btn-default">목록으로</a>
+    </div>
+    <div class="pull-right" th:with="uid=${#authentication.principal.member.uid}">
+        <button th:if="${uid} eq ${boardForm.writer}" type="button" class="btn btn-info" id="update">수정</button>
+        <button th:if="${uid} eq ${boardForm.writer}" type="button" class="btn btn-danger" id="delete">삭제</button>
+    </div>
+</div>
+<br/><br/>
+
+<!-- 댓글 출력하는 부분 -->
+<div class='container'>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>RNO</th>
+            <th>REPLY TEXT</th>
+            <th>REPLIER</th>
+            <th>REPLY DATE</th>
+        </tr>
+        </thead>
+        <tbody id="replyTable" >
+        </tbody>
+    </table>
+
+    <div class='pull-right'>
+        <button class='btn-primary' id='addReplyBtn'>댓글 작성</button>
+    </div>
+</div>
+
+
+<!-- 모달창  -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <label>댓글내용</label>
+                <input type="text" class="form-control" name='content' id="modal_content">
+
+                <label>작성자</label>
+                <input type="text" class="form-control" name='replier' id="modal_replier">
+            </div>
+            <div class="modal-footer">
+                <button id='delModalBtn'class="btn btn-danger">삭제</button>
+                <button id='modalBtn'class="btn btn-info">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  end Modal -->
+
+</div>
+<div th:replace="layout/footer::footer"></div>
+
+<!--  end fragment -->
+<script th:inline="javascript" th:src="${'/js/reply.js'}"></script>
+<script th:inline="javascript">
+
+    $(document).ready(function (e){
+
+        var mode;
+        var bno = [[${boardForm.id}]];
+
+        var contentObj = $("input[name='content']");
+        var replierObj = $("input[name='replier']");
+        var rno;
+
+        var headers = {};
+        var csrfTocken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        headers[csrfHeader] = csrfTocken;
+
+
+        $("#addReplyBtn").on('click', function(){
+            $("#modal_content").val("");
+            $("#modal_replier").val("");
+
+            $("#modalBtn").html("작성");
+            $("#myModal").modal("show");
+            $(".modal-title").text("댓글 추가");
+
+            $("#delModalBtn").hide();
+
+            mode= "ADD";
+        });
+
+        $("#delModalBtn").on("click", function(){
+
+            var obj = {bno:bno, rno:rno};
+
+            replyManager.remove(obj, headers, function(list){
+
+                alert("댓글이 삭제되었습니다. ")
+                afterAll(list);
+            });
+
+        });
+
+
+        $("#replyTable").on("click", "tr", function(e){
+
+            $("#modalBtn").html("수정");
+
+            var tds = $(this).find('td');
+
+            console.log(tds);
+
+            rno = tds[0].innerHTML;
+            mode ='MOD';
+
+            contentObj.val(tds[1].innerHTML);
+            replierObj.val(tds[2].innerHTML);
+            $("#delModalBtn").show();
+            $("#myModal").modal("show");
+            $(".modal-title").text("Modiy/Delete Reply");
+
+        });
+
+        function afterAll(list){
+            printList(list);
+            $("#myModal").modal("hide");
+            contentObj.val("");
+            replierObj.val("");
+        }
+
+
+        $("#modalBtn").click(function(){
+
+            var content =  contentObj.val();
+            var replier = replierObj.val();
+
+
+
+            if(mode =='ADD'){
+
+                var obj = {content:content, replier: replier, bno:bno};
+
+                //console.log(obj);
+
+                replyManager.add(obj, headers, function(list){
+                    alert("새로운 댓글이 추가되었습니다. ")
+                    afterAll(list);
+                });
+
+            }else if(mode='MOD'){
+
+                var obj = {content:content, bno:bno, id:rno};
+
+                replyManager.update(obj, headers, function(list){
+
+                    alert("댓글이 수정되었습니다. ")
+                    afterAll(list);
+                });
+            }
+        });
+
+        (function getAllReplies(){
+            //load replies
+            replyManager.getAll([[${boardForm.id}]], printList);
+        })();
+
+
+        function printList(list){
+            var str = "";
+            var replyObj;
+            for(var i = 0; i < list.length; i++){
+                replyObj = list[i];
+                str += "<tr>" +
+                    "<td>"+ replyObj.id+" </td>" +
+                    "<td>"+ replyObj.content+" </td>" +
+                    "<td>"+ replyObj.replier+" </td>" +
+                    "<td>"+ formatDate(replyObj.createdAt)+"</td>" +
+                    "</tr>";
+            }
+            $("#replyTable").html(str);
+        }
+
+        function formatDate(timeValue){
+
+            var date = new Date(timeValue);
+            return  date.getFullYear()
+                + "-" + (date.getMonth()+1 >= 10?date.getMonth()+1 : '0'+ (date.getMonth()+1)  )
+                + "-" + date.getDate() + " " + date.getHours() +"시" + date.getMinutes() + "분"
+        }
+
+    });
+</script>
+
+<!--게시 CRUD REST API 구현-->
+<script th:if="${boardForm?.id}">
+    $('#update').click(function () {
+        var jsonData = JSON.stringify({
+            title: $('#board_title').val(),
+            content: $('#board_content').val()
+        });
+
+        var headers = {};
+        var csrfTocken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+        headers[csrfHeader] = csrfTocken;
+
+        $.ajax({
+            url: "http://localhost:8080/api/boards/" + $('#board_id').val(),
+            type: "PUT",
+            data: jsonData,
+            contentType: "application/json",
+            headers: headers,
+            dataType: "json",
+            success: function () {
+                alert('수정 성공!');
+                location.href = '/board/list';
+            },
+            error: function () {
+                alert('수정 실패!');
+            }
+        });
+    });
+    $('#delete').click(function () {
+
+        var headers = {};
+        var csrfTocken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        headers[csrfHeader] = csrfTocken;
+
+        $.ajax({
+            url: "http://localhost:8080/api/boards/" + $('#board_id').val(),
+            headers: headers,
+            type: "DELETE",
+            success: function () {
+                alert('삭제 성공!');
+                location.href = '/board/list';
+            },
+            error: function () {
+                alert('삭제 실패!');
+            }
+        });
+    });
+</script>
+</body>
+</html>

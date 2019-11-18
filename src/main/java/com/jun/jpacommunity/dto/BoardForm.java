@@ -27,8 +27,12 @@ public class BoardForm {
     private Member member;
 
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     public Board toEntity(){
-        Board board = Board.createBoard(this.writer ,this.title, this.content, this.member);
+        Board board = Board.createBoard(this.title, this.content, this.member);
         return board;
     }
 

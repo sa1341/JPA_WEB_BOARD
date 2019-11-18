@@ -1,5 +1,6 @@
 package com.jun.jpacommunity.domain;
 
+import com.jun.jpacommunity.dto.MemberDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

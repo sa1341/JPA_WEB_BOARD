@@ -36,28 +36,29 @@ public class BoardController {
         return "board/boardValidForm";
     }
 
-
     @PostMapping("/valid")
     public String boardValid(@Valid BoardValidForm boardValidForm, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "board/boardValidForm";
         }
-
-
         return "redirect:/board";
-
     }
 
 
-    // 게시글 내용  제목으로  조회시 호출
-    @GetMapping({"", "/"})
-    public String board(@RequestParam(value ="id", defaultValue = "0") Long id, Model model){
+    // 게시글 id로 조회시 호출  이 부분을 수정 폼, 상세 조회 폼, 게시글 등록 폼을 어떻게 설계하고 나눌지 고민하기.
+    @GetMapping("/view")
+    public String board(@RequestParam(value ="id") Long id, Model model){
         BoardResponse boardResponse = new BoardResponse(boardService.findBoardById(id));
+
         model.addAttribute("boardForm", boardResponse);
+        return "board/view";
+    }
+
+    @GetMapping("/writeArticle")
+    public String writeArticle(){
         return "board/boardForm";
     }
-
 
     // 게시글 목록 호출
     @GetMapping("/list")

@@ -45,7 +45,7 @@
         <h1>게시글 목록</h1>
     </div>
     <div class="pull-right" style="width:100px;margin:10px 0;">
-        <a th:href="@{/board}" class="btn btn-primary btn-block">등록</a>
+        <a th:href="@{/board/writeArticle}" class="btn btn-primary btn-block">등록</a>
     </div>
     <br/><br/><br/>
 
@@ -64,8 +64,8 @@
             <tbody>
             <tr th:each="board : ${boardList}">
                 <td th:text="${board.id}"></td>
-                <td><a th:href="'/board?id='+${board.id}" th:text="${board.title}"></a></td>
-                <td th:text="${board?.writer}"></td>
+                <td><a th:href="'/board/view?id='+${board.id}" th:text="${board.title}"></a></td>
+                <td th:text="${board?.member?.uid}"></td>
                 <td th:text="${#dates.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
                 <td th:text="${#dates.format(board.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>

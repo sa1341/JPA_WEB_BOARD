@@ -17,14 +17,9 @@ public class BoardResponse {
 
 
     private Long id;
-
-    private String writer;
-
     private String title;
-
+    private String writer;
     private String content;
-
-    private Member member;
 
     private List<Reply> replies = new ArrayList<Reply>();
 
@@ -35,10 +30,9 @@ public class BoardResponse {
 
     public BoardResponse(Board board){
         this.id = board.getId();
-        this.writer = board.getWriter();
         this.title = board.getTitle();
+        this.writer = board.getMember().getUid();
         this.content = board.getContent();
-        this.member = board.getMember();
         this.replies = board.getReplies();
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();

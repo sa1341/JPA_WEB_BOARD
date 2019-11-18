@@ -23,8 +23,6 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    private String writer;
-
     @NotEmpty(message = "제목을 넣으셔야 합니다.")
     @Column(nullable = false)
     private String title;
@@ -56,10 +54,9 @@ public class Board {
     }
 
 
-    public static Board createBoard(final String writer ,final String title, final String content, final Member member){
+    public static Board createBoard(final String title, final String content, final Member member){
 
         Board board = new Board();
-        board.writer = writer;
         board.title = title;
         board.content = content;
         board.member = member;

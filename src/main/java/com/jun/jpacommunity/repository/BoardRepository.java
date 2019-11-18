@@ -45,9 +45,9 @@ public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPre
                 builder.and(board.content.like("%" + keyword + "%"));
                 break;
 
-            case "w":
+          /*  case "w":
                 builder.and(board.writer.like("%" + keyword + "%"));
-                break;
+                break;*/
         }
         return builder;
     }
