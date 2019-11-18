@@ -197,7 +197,6 @@
             printList(list);
             $("#myModal").modal("hide");
             contentObj.val("");
-            replierObj.val("");
         }
 
 
@@ -205,7 +204,6 @@
 
             var content =  contentObj.val();
             var replier = replierObj.val();
-
 
 
             if(mode =='ADD'){
@@ -231,12 +229,13 @@
             }
         });
 
+        //댓글 목록 조회
         (function getAllReplies(){
             //load replies
             replyManager.getAll([[${boardForm.id}]], printList);
         })();
 
-
+        // 댓글 목록 생성
         function printList(list){
             var str = "";
             var replyObj;
@@ -251,7 +250,7 @@
             }
             $("#replyTable").html(str);
         }
-
+        //날짜 포맷 변
         function formatDate(timeValue){
 
             var date = new Date(timeValue);

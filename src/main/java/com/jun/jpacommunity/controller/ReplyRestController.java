@@ -48,7 +48,6 @@ public class ReplyRestController {
     @PostMapping("/{bno}")
     public ResponseEntity<List<ReplyResponse>> addReply(@PathVariable("bno") final Long bno, @RequestBody final ReplyDto replyDto) {
 
-        log.info("addReply");
         log.info("bno: " + bno);
         log.info("REPLY: " + replyDto.getContent());
         log.info("REPLY: " + replyDto.getReplier());
@@ -56,8 +55,7 @@ public class ReplyRestController {
         String memberId = replyDto.getReplier();
 
         Board findBoard = boardService.findBoardById(bno);
-        Member findMember = memberService.findById(memberId);
-
+        Member findMember = memberService.findById(memberId.trim());
         Reply reply = replyDto.toEntity(findBoard, findMember);
 
         replyService.save(reply);
@@ -71,14 +69,9 @@ public class ReplyRestController {
         log.info("getListByBoard...." + board);
 
         List<Reply> replies =  replyService.getRepliesOfBoard(board);
-
         replies.forEach(r -> System.out.println(r.getMember().getUid() + " " + r.getContent() + " " + r.getId() + " " + r.getBoard().getId()));
 
-
         List<ReplyResponse> replyResponses = replies.stream().map(r -> new ReplyResponse(r)).collect(Collectors.toList());
-
-        replyResponses.forEach(r -> System.out.println(r.getId() +" " + r.getContent() + " " + r.getWriter()));
-
 
         return replyResponses;
 
