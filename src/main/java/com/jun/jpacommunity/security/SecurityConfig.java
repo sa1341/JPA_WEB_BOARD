@@ -49,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
       http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
 
+      http.authorizeRequests().antMatchers("/board/view").permitAll();
+
       // customize 한 로그인 페이지 설정
       http.formLogin().loginPage("/loginForm");
 

@@ -113,7 +113,7 @@
                 <input type="text" class="form-control" name='content' id="modal_content">
 
                 <label>작성자</label>
-                <input type="text" class="form-control" name='replier' id="modal_replier">
+                <input type="text" class="form-control" name='replier' id="modal_replier" th:value="${#authentication.principal.member.uid}">
             </div>
             <div class="modal-footer">
                 <button id='delModalBtn'class="btn btn-danger">삭제</button>
@@ -150,7 +150,7 @@
 
         $("#addReplyBtn").on('click', function(){
             $("#modal_content").val("");
-            $("#modal_replier").val("");
+            $("#modal_replier").val();
 
             $("#modalBtn").html("작성");
             $("#myModal").modal("show");
@@ -245,7 +245,7 @@
                 str += "<tr>" +
                     "<td>"+ replyObj.id+" </td>" +
                     "<td>"+ replyObj.content+" </td>" +
-                    "<td>"+ replyObj.replier+" </td>" +
+                    "<td>"+ replyObj.writer+" </td>" +
                     "<td>"+ formatDate(replyObj.createdAt)+"</td>" +
                     "</tr>";
             }

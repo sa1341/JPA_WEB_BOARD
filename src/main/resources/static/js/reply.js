@@ -3,7 +3,7 @@ var replyManager = (function(){
     var getAll  = function(obj, callback){
         console.log("get All....");
 
-        $.getJSON('/api/replies/'+obj,callback );
+        $.getJSON('/api/replies/'+obj,callback);
 
     };
 

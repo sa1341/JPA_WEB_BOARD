@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Getter
 @Entity
 @Setter
-@ToString(exclude = "board")
+@ToString(exclude = {"board", "member"})
 public class Reply {
 
     @Id
@@ -23,10 +23,13 @@ public class Reply {
 
     private String content;
 
-    private String replier;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
@@ -35,5 +38,6 @@ public class Reply {
 
     @UpdateTimestamp
     private Timestamp updateAt;
+
 
 }

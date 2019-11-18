@@ -1,10 +1,14 @@
 package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
+import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.Reply;
+import com.jun.jpacommunity.dto.ReplyDto;
+import com.jun.jpacommunity.dto.ReplyResponse;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.ReplyRepository;
 import com.jun.jpacommunity.service.BoardService;
+import com.jun.jpacommunity.service.MemberService;
 import com.jun.jpacommunity.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/replies")
@@ -25,9 +30,11 @@ public class ReplyRestController {
 
     private final BoardService boardService;
 
+    private final MemberService memberService;
+
     //게시글 상세 조회시 해당 게시글과 연관관계를 가진 댓글들을 조회
     @GetMapping("/{bno}")
-    public ResponseEntity<List<Reply>> getReplies(@PathVariable("bno") Long bno){
+    public ResponseEntity<List<ReplyResponse>> getReplies(@PathVariable("bno") Long bno){
 
         log.info("get All Replies.................");
 
@@ -39,30 +46,47 @@ public class ReplyRestController {
 
     // 댓글 등록 회후 게시글 목록 조회
     @PostMapping("/{bno}")
-    public ResponseEntity<List<Reply>> addReply(@PathVariable("bno") final Long bno, @RequestBody final Reply reply) {
+    public ResponseEntity<List<ReplyResponse>> addReply(@PathVariable("bno") final Long bno, @RequestBody final ReplyDto replyDto) {
 
         log.info("addReply");
         log.info("bno: " + bno);
-        log.info("REPLY: " + reply);
+        log.info("REPLY: " + replyDto.getContent());
+        log.info("REPLY: " + replyDto.getReplier());
+
+        String memberId = replyDto.getReplier();
 
         Board findBoard = boardService.findBoardById(bno);
-        reply.setBoard(findBoard);
+        Member findMember = memberService.findById(memberId);
+
+        Reply reply = replyDto.toEntity(findBoard, findMember);
+
         replyService.save(reply);
 
         return new ResponseEntity<>(getListByBoard(findBoard), HttpStatus.CREATED);
     }
 
     // 게시글에 대한 댓글 목록 조회
-    public List<Reply> getListByBoard(final Board board) throws RuntimeException{
+    public List<ReplyResponse> getListByBoard(final Board board) throws RuntimeException{
 
         log.info("getListByBoard...." + board);
 
-        return replyService.getRepliesOfBoard(board);
+        List<Reply> replies =  replyService.getRepliesOfBoard(board);
+
+        replies.forEach(r -> System.out.println(r.getMember().getUid() + " " + r.getContent() + " " + r.getId() + " " + r.getBoard().getId()));
+
+
+        List<ReplyResponse> replyResponses = replies.stream().map(r -> new ReplyResponse(r)).collect(Collectors.toList());
+
+        replyResponses.forEach(r -> System.out.println(r.getId() +" " + r.getContent() + " " + r.getWriter()));
+
+
+        return replyResponses;
+
     }
 
     // 게시글에 대한 댓글 수
     @PutMapping("/{bno}")
-    public ResponseEntity<List<Reply>> updateReply(@PathVariable("bno") final Long bno, @RequestBody final Reply reply){
+    public ResponseEntity<List<ReplyResponse>> updateReply(@PathVariable("bno") final Long bno, @RequestBody final Reply reply){
 
         log.info("update reply: " + reply);
 
@@ -77,7 +101,7 @@ public class ReplyRestController {
 
     // 댓글 삭제 후 게시글의 댓글 갱신
     @DeleteMapping("/{bno}/{rno}")
-    public ResponseEntity<List<Reply>> deleteReply(@PathVariable("bno") final Long bno, @PathVariable("rno") final Long rno){
+    public ResponseEntity<List<ReplyResponse>> deleteReply(@PathVariable("bno") final Long bno, @PathVariable("rno") final Long rno){
 
         log.info("delete reply: " + rno);
         replyService.deleteReplyById(rno);
