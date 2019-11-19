@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Board Form</title>
@@ -30,8 +31,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li sec:authorize="isAuthenticated()">
                     <a href="/logout">LOGOUT</a>
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a href="/loginForm">LOGIN</a>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

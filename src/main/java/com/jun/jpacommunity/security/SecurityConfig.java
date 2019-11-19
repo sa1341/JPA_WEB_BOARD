@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 import javax.sql.DataSource;
 
@@ -54,11 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // customize 한 로그인 페이지 설정
       http.formLogin().loginPage("/loginForm").defaultSuccessUrl("/board/list");
 
+      // 로그아웃시에 세션 무효화, 스프링 시큐리티는 웹을 HttpSession 방식이기 때문에 브라우저가 완전히 종료되면, 로그인한 정보를 잃게 됩니다. 브라우저를 종료하지않을시에.. 로그아웃으로 무효화시킵니다.
+      http.logout().logoutUrl("/logout").invalidateHttpSession(true);
+
       //특정 리소스에 대한 접근 권한이 존재하지 않을때 이동시킬 페이지 설정
       http.exceptionHandling().accessDeniedPage("/accessDenied");
 
-      // 로그아웃시에 세션 무효화, 스프링 시큐리티는 웹을 HttpSession 방식이기 때문에 브라우저가 완전히 종료되면, 로그인한 정보를 잃게 됩니다. 브라우저를 종료하지않을시에.. 로그아웃으로 무효화시킵니다.
-      http.logout().logoutUrl("/logout").invalidateHttpSession(true);
       http.sessionManagement().maximumSessions(1);
       http.rememberMe().key("jpa").userDetailsService(jpaUserService).tokenRepository(getJDBCRepository()).tokenValiditySeconds(60*60*24);
     }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--header-->
 <div th:fragment="header">
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -20,7 +21,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                    <li sec:authorize="isAuthenticated()">
                         <a href="/logout">LOGOUT</a>
+                    </li>
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/loginForm">LOGIN</a>
+                    </li>
                     </li>
                 </ul>
             </div>
