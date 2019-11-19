@@ -29,7 +29,7 @@
 2. [step-02 : 게시글 및 댓글 엔티티 정의](https://github.com/sa1341/jpacommunity/blob/master/doc/board-2.md)
 3. [step-03 : 게시글 및 댓글 Controller 구현 : 표현영역 효율적으로 관리하기](https://github.com/sa1341/jpacommunity/blob/master/doc/board-3.md)
 4. [step-04 : 게시판 페이징 처리 구현](https://github.com/sa1341/jpacommunity/blob/master/doc/board-4.md)
-5. [step-05 : 스프링 시큐리티를 적용하여 폼기반의 인증 구현 및 게시판과 연동하기](https://github.com/sa1341/TIL/edit/master/Java/Spring/%EC%8A%A4%ED%94%84%EB%A7%81%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0.md)
+5. [step-05 : 스프링 시큐리티를 적용하여 폼기반의 인증 구현 및 게시판과 연동하기](https://github.com/sa1341/TIL/blob/master/Java/Spring/%EC%8A%A4%ED%94%84%EB%A7%81%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0.md)
 #### 5. 프로젝트 실행환경
 Lombok이 반드시 설치 되있어야 합니다.
 * [IntellJ 설치 : [lombok] IntelliJ에 lombok(롬복) 설치](https://abettercode.tistory.com/72)
