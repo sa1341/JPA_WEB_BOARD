@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http.authorizeRequests().antMatchers("/board/view").permitAll();
 
       // customize 한 로그인 페이지 설정
-      http.formLogin().loginPage("/loginForm");
+      http.formLogin().loginPage("/loginForm").defaultSuccessUrl("/board/list");
 
       //특정 리소스에 대한 접근 권한이 존재하지 않을때 이동시킬 페이지 설정
       http.exceptionHandling().accessDeniedPage("/accessDenied");

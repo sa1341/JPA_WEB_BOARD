@@ -67,10 +67,7 @@ public class ReplyRestController {
     public List<ReplyResponse> getListByBoard(final Board board) throws RuntimeException{
 
         log.info("getListByBoard...." + board);
-
         List<Reply> replies =  replyService.getRepliesOfBoard(board);
-        replies.forEach(r -> System.out.println(r.getMember().getUid() + " " + r.getContent() + " " + r.getId() + " " + r.getBoard().getId()));
-
         List<ReplyResponse> replyResponses = replies.stream().map(r -> new ReplyResponse(r)).collect(Collectors.toList());
 
         return replyResponses;
@@ -98,7 +95,6 @@ public class ReplyRestController {
 
         log.info("delete reply: " + rno);
         replyService.deleteReplyById(rno);
-
         Board findBoard = boardService.findBoardById(bno);
 
         return new ResponseEntity<>(getListByBoard(findBoard), HttpStatus.OK);

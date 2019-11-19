@@ -71,7 +71,7 @@
     <div class="pull-left">
         <a href="/board/list" class="btn btn-default">목록으로</a>
     </div>
-    <div class="pull-right" th:with="uid=${#authentication.principal.member.uid}">
+    <div class="pull-right" th:with="uid=${#authentication.principal}">
         <button th:if="${uid} eq ${boardForm.writer}" type="button" class="btn btn-info" id="update">수정</button>
         <button th:if="${uid} eq ${boardForm.writer}" type="button" class="btn btn-danger" id="delete">삭제</button>
     </div>
@@ -113,7 +113,7 @@
                 <input type="text" class="form-control" name='content' id="modal_content">
 
                 <label>작성자</label>
-                <input type="text" class="form-control" name='replier' id="modal_replier" th:value="${#authentication.principal.member.uid}">
+                <input type="text" class="form-control" name='replier' id="modal_replier" th:value="${#authentication.principal}">
             </div>
             <div class="modal-footer">
                 <button id='delModalBtn'class="btn btn-danger">삭제</button>
