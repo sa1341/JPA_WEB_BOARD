@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class MemberController {
 
     //포스트 백 : 자기자신한테 요청을 하는 경우 form 태그에서 action 값이 생략되어 있습니다.
     @PostMapping("/join")
-    public String joinPost(@ModelAttribute("member") Member member){
+    public String joinPost(@ModelAttribute("member") Member member, HttpServletResponse response) throws Exception{
 
         System.out.println(member.getUname());
         System.out.println(member.getUid());
@@ -34,12 +36,14 @@ public class MemberController {
 
         String encryptPw = passwordEncoder.encode(member.getUpw());
 
-        System.out.println(encryptPw);
-        member.setUpw(encryptPw);
+        //System.out.println(encryptPw);
+        //member.setUpw(encryptPw);
 
         memberRepository.save(member);
 
+
         return "redirect:/board/list";
     }
+
 
 }

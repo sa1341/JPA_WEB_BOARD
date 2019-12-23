@@ -2,18 +2,31 @@ package com.jun.jpacommunity.repository;
 
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.QBoard;
+import com.jun.jpacommunity.domain.QMember;
+import com.jun.jpacommunity.dto.BoardDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 
 public interface BoardRepository extends JpaRepository<Board, Long>, QuerydslPredicateExecutor<Board> {
 
     @Query("select count(r) from Board b " + " JOIN b.replies r where b.id = ?1")
     public int getReplyCount(Long count);
+
+
+    @Query("select b from Board b " +
+            "join fetch b.member m"
+    )
+    public List<Board> getAllBoardWithMembers();
+
+
 
     // 자바 8부터 인터페이스에 디폴트 메소드가 추가가 가능해졌습니다.
     public default Predicate makePredicate(BoardSearch boardSearch) {

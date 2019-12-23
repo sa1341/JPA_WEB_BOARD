@@ -37,14 +37,13 @@ public class ReplyServiceTest {
 
         Reply reply = new Reply();
         reply.setContent("좆까 니들의 개병신같은 핑계");
-        reply.setReplier("임준영");
         reply.setBoard(findBoard);
 
         //when
         replyRepository.save(reply);
 
         //then
-        assertEquals("임준영", replyRepository.findById(reply.getId()).get().getReplier());
+        //assertEquals("임준영", replyRepository.findById(reply.getId()).get().getReplier());
 
 
      }

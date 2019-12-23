@@ -1,0 +1,5 @@
+google:
+  client:
+    clientId: 604723471286-ovjm2hrcnaehk7cutn3blb24b3l7pc20.apps.googleusercontent.com
+    clientSecret: DCeKZkuXATeuHA9KIDQtUMPG
+    scope: email, profile

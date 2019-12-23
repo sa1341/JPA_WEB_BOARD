@@ -2,18 +2,17 @@ package com.jun.jpacommunity.service;
 
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.dto.BoardForm;
-import com.jun.jpacommunity.dto.BoardResponse;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,6 +70,9 @@ public class BoardService {
     }
 
 
+    public List<Board> getAllBoardWithMembers(){
+        return boardRepository.getAllBoardWithMembers();
+    }
 
 }
 

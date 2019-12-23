@@ -21,6 +21,8 @@ build/
 *.ipr
 out/
 
+/src/main/resources/google.yml
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

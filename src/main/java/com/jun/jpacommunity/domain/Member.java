@@ -1,7 +1,8 @@
 package com.jun.jpacommunity.domain;
 
-import com.jun.jpacommunity.dto.MemberDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -30,10 +31,11 @@ public class Member {
     private String email;
 
     private int age;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     List<Board> boards = new ArrayList<Board>();
 
+    @BatchSize(size = 100)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "member")
     private List<MemberRole> roles;

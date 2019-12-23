@@ -1,3 +1,4 @@
+
 package com.jun.jpacommunity.security;
 
 import com.jun.jpacommunity.domain.Member;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 
 @Getter
 public class JpaSecurityUser extends User {
@@ -42,3 +44,4 @@ public class JpaSecurityUser extends User {
     }
 
 }
+

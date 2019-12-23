@@ -5,6 +5,8 @@ import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.QBoard;
 import com.jun.jpacommunity.domain.Reply;
+import com.jun.jpacommunity.dto.BoardDto;
+import com.jun.jpacommunity.dto.BoardForm;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.repository.ReplyRepository;
@@ -17,12 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -152,9 +156,23 @@ public class BoardServiceTest {
     }
 
 
+    @Test
+    @Transactional
+    @Commit
+    public void 게시글_회원_조인패치_테스트() throws Exception {
 
 
+        List<Board> boards = boardService.getAllBoardWithMembers();
 
+        List<BoardDto> boardDtos = boards.stream()
+                .map(b -> new BoardDto(b))
+                .collect(Collectors.toList());
+
+        //when
+        boardDtos.forEach(b -> System.out.println(b.getId() +" " +b.getTitle() + " " + b.getMemberId() +" " + b.getCreatedAt() + " " + b.getUpdateAt()));
+
+        //then
+    }
 
 
 }

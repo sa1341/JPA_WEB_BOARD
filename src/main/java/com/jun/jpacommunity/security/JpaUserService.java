@@ -1,10 +1,10 @@
+
 package com.jun.jpacommunity.security;
 
 import com.jun.jpacommunity.exception.UserNotFoundException;
 import com.jun.jpacommunity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,3 +29,4 @@ public class JpaUserService implements UserDetailsService {
         return user;
     }
 }
+

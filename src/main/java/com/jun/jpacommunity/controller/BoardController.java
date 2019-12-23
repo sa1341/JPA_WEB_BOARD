@@ -1,7 +1,10 @@
 package com.jun.jpacommunity.controller;
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.dto.*;
+import com.jun.jpacommunity.dto.BoardResponse;
+import com.jun.jpacommunity.dto.BoardValidForm;
+import com.jun.jpacommunity.dto.PageMaker;
+import com.jun.jpacommunity.dto.PageVO;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
@@ -50,7 +53,7 @@ public class BoardController {
     @GetMapping("/view")
     public String board(@RequestParam(value ="id") Long id, Model model){
         BoardResponse boardResponse = new BoardResponse(boardService.findBoardById(id));
-
+        log.info("" + boardResponse.getWriter() + " " + boardResponse.getContent());
         model.addAttribute("boardForm", boardResponse);
         return "board/view";
     }
