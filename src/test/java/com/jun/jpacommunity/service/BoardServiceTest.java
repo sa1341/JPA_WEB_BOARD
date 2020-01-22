@@ -2,11 +2,6 @@ package com.jun.jpacommunity.service;
 
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.domain.Member;
-import com.jun.jpacommunity.domain.QBoard;
-import com.jun.jpacommunity.domain.Reply;
-import com.jun.jpacommunity.dto.BoardDto;
-import com.jun.jpacommunity.dto.BoardForm;
 import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.repository.ReplyRepository;
@@ -20,16 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -109,12 +96,12 @@ public class BoardServiceTest {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        QBoard board = QBoard.board;
+      /*  QBoard board = QBoard.board;
         if (title.equals("제목200")) {
             builder.and(board.title.like("%" + title + "%"));
         }
 
-        builder.and(board.id.gt(0));
+        builder.and(board.id.gt(0));*/
         Pageable pageable = PageRequest.of(0, 10);
 
         Page<Board> boards = boardRepository.findAll(builder, pageable);
@@ -162,16 +149,12 @@ public class BoardServiceTest {
     public void 게시글_회원_조인패치_테스트() throws Exception {
 
 
-        List<Board> boards = boardService.getAllBoardWithMembers();
+     /*   //List<Board> boards = boardService.getAllBoardWithMembers();
 
         List<BoardDto> boardDtos = boards.stream()
                 .map(b -> new BoardDto(b))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
-        //when
-        boardDtos.forEach(b -> System.out.println(b.getId() +" " +b.getTitle() + " " + b.getMemberId() +" " + b.getCreatedAt() + " " + b.getUpdateAt()));
-
-        //then
     }
 
 

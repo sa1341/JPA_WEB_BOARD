@@ -10,7 +10,7 @@ public class BoardDto {
 
     private Long id;
     private String title;
-    private String memberId;
+    private String email;
 
     private Timestamp createdAt;
 
@@ -21,7 +21,7 @@ public class BoardDto {
 
         this.id = board.getId();
         this.title = board.getTitle();
-        this.memberId = board.getMember().getUname();
+        this.email = board.getUser().getEmail();
         this.createdAt = board.getCreatedAt();
         this.updateAt = board.getUpdatedAt();
     }

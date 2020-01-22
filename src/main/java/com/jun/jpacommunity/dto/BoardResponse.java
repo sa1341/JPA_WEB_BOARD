@@ -1,7 +1,6 @@
 package com.jun.jpacommunity.dto;
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.Reply;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,7 +30,7 @@ public class BoardResponse {
     public BoardResponse(Board board){
         this.id = board.getId();
         this.title = board.getTitle();
-        this.writer = board.getMember().getUid();
+        this.writer = board.getUser().getEmail();
         this.content = board.getContent();
         this.replies = board.getReplies();
         this.createdAt = board.getCreatedAt();

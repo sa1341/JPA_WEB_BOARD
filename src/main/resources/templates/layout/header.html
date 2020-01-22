@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<!--header-->
-<div th:fragment="header">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a th:href="@{/board/list}" class="navbar-brand" style="text-decoration:none;">
-                    <img th:src="@{/images/spring_boot_gray.png}" class="img-rounded" style="display:inline-block;height:100%;margin-right:5px" />
-                    <span style="vertical-align:middle;">JPA COmmunity Web</span>
-                </a>
-            </div>
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head th:fragment="header">
+        <title>게시글 폼 화</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" th:href="@{/css/base.css}"/>
+        <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
+        <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <style>
+        .fieldError {
+            border-color: #bd2130;
+        }
+    </style>
+    <!--header-->
+    <div th:fragment="login_header">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a th:href="@{/board/list}" class="navbar-brand" style="text-decoration:none;">
+                        <img th:src="@{/images/spring_boot_gray.png}" class="img-rounded"
+                             style="display:inline-block;height:100%;margin-right:5px"/>
+                        <span style="vertical-align:middle;">JPA COmmunity Web</span>
+                    </a>
+                </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a href="/logout">LOGOUT</a>
-                    </li>
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/loginForm">LOGIN</a>
-                    </li>
-                    </li>
-                </ul>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a href="/logout">LOGOUT</a>
+                        </li>
+                        <li sec:authorize="isAnonymous()">
+                            <a href="/loginForm">LOGIN</a>
+                        </li>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-</div>
-<!--/header-->
-</html>
+        </nav>
+    </div>
+    <!--/header-->

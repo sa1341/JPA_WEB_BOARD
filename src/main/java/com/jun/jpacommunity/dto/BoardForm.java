@@ -2,7 +2,7 @@ package com.jun.jpacommunity.dto;
 
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.domain.Member;
+import com.jun.jpacommunity.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +24,15 @@ public class BoardForm {
 
     private  String content;
 
-    private Member member;
+    private User user;
 
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Board toEntity(){
-        Board board = Board.createBoard(this.title, this.content, this.member);
+        Board board = Board.createBoard(this.title, this.content, this.user);
         return board;
     }
 

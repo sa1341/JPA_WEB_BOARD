@@ -1,8 +1,10 @@
 package com.jun.jpacommunity.domain;
 
-import com.jun.jpacommunity.domain.enums.BoardType;
 import com.jun.jpacommunity.dto.BoardForm;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"replies", "member"})
+@ToString(exclude = {"replies", "user"})
 public class Board {
 
     @Id
@@ -31,9 +33,9 @@ public class Board {
     @Column(length = 500)
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Reply> replies = new ArrayList<Reply>();
@@ -54,12 +56,12 @@ public class Board {
     }
 
 
-    public static Board createBoard(final String title, final String content, final Member member){
+    public static Board createBoard(final String title, final String content, final User user){
 
         Board board = new Board();
         board.title = title;
         board.content = content;
-        board.member = member;
+        board.user = user;
         return board;
     }
 
@@ -69,10 +71,8 @@ public class Board {
         this.content = boardForm.getContent();
     }
 
-    public void setMember(final Member member) {
-        this.member = member;
-
-        member.getBoards().add(this);
+    public void setMember(final User user) {
+        this.user = user;
     }
 
 

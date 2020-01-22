@@ -1,28 +1,8 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
-    <title>Board Form</title>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/normalize.css}" />
-    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
-<!--    <script th:src="@{/js/plugins.js}"></script>
-    <script th:src="@{/js/main.js}"></script>-->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<style>
-    .fieldError {
-        border-color: #bd2130;
-    }
-</style>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header :: header}"></head>
 
-<div th:replace="layout/header::header"></div>
+<body>
+<div th:replace="~{layout/header :: login_header}"></div>
 <div class="container">
     <div class="page-header">
         <h1>게시글 등록</h1>
@@ -31,8 +11,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         <table class="table">
             <tr>
                 <th style="padding:13px 0 0 15px;">작성자</th>
-                <td th:with="member=${#authentication}">
-                    <input id="board_writer" type="text" class="col-md-1 form-control input-sm" th:value="${member.principal.member.uid}" readonly="readonly"/>
+                <td th:with="usermail=${usermail}">
+                    <input id="board_writer" type="text" class="col-md-1 form-control input-sm" th:value="${usermail}" readonly="readonly"/>
                 </td>
             </tr>
             <tr>
@@ -68,18 +48,19 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
             content: $('#board_content').val(),
             writer : $('#board_writer').val()
         });
+    /*
+        햔제 securityConfig 파일에서 csrf disable 한 상태라 주석처리 하였음.
         var headers = {};
         var csrfTocken = $("meta[name='_csrf']").attr("content");
         var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
         headers[csrfHeader] = csrfTocken;
+    */
 
         $.ajax({
             url: "http://localhost:8080/api/boards",
             type: "POST",
             data: jsonData,
             contentType: "application/json",
-            headers: headers,
             dataType: "json",
             success: function () {
                 alert('저장 성공!');

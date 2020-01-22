@@ -3,8 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Board Form</title>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link rel="stylesheet" th:href="@{/css/normalize.css}" />
@@ -72,8 +70,8 @@
     </div>
 
     <div class="pull-right" sec:authorize="hasRole('ROLE_BASIC')">
-        <button th:if="${#authentication.principal.member.uid == boardForm.writer}" type="button" class="btn btn-info" id="update">수정</button>
-        <button th:if="${#authentication.principal.member.uid == boardForm.writer}" type="button" class="btn btn-danger" id="delete">삭제</button>
+        <button th:if="${username == boardForm.writer}" type="button" class="btn btn-info" id="update">수정</button>
+        <button th:if="${username == boardForm.writer}" type="button" class="btn btn-danger" id="delete">삭제</button>
     </div>
 </div>
 <br/><br/>

@@ -1,19 +1,16 @@
 
 package com.jun.jpacommunity.security;
 
+import com.jun.jpacommunity.configuration.auth.CustomerOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -29,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
 
+    private final CustomerOAuth2UserService customerOAuth2UserService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -41,18 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       log.info("security config.......");
 
 
-      // 웹과 관련된 다양한 보안 설정을 걸어주는 역할을 합니다.
-      http.authorizeRequests().antMatchers("/guest/**").permitAll()
-              .antMatchers("/board/list").permitAll()
-              .antMatchers("/board/writeArticle").hasRole("BASIC");
-
-      http.authorizeRequests().antMatchers("/resources/**").permitAll();
-
       // authorizeRequests()는 시큐리티 처리에 HttpServletRequest를 이용합니다.
-      http.authorizeRequests().antMatchers("/manager/**").hasRole("MANAGER");
-
-      http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
-
+      // 웹과 관련된 다양한 보안 설정을 걸어주는 역할을 합니다.
+      http.authorizeRequests().antMatchers("/board/writeArticle").hasRole("BASIC");
+      http.authorizeRequests().antMatchers("/resources/**").permitAll();
       http.authorizeRequests().antMatchers("/board/view").permitAll();
 
       // customize 한 로그인 페이지 설정
@@ -63,9 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
       //특정 리소스에 대한 접근 권한이 존재하지 않을때 이동시킬 페이지 설정
       http.exceptionHandling().accessDeniedPage("/accessDenied");
-
       http.sessionManagement().maximumSessions(1);
-      http.rememberMe().key("jpa").userDetailsService(jpaUserService).tokenRepository(getJDBCRepository()).tokenValiditySeconds(60*60*24);
+      http.csrf().disable();
+      http.oauth2Login().userInfoEndpoint().userService(customerOAuth2UserService);
+
+    //http.rememberMe().key("jpa").userDetailsService(jpaUserService).tokenRepository(getJDBCRepository()).tokenValiditySeconds(60*60*24);
     }
 
     @Bean
@@ -73,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
+/*    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(jpaUserService).passwordEncoder(passwordEncoder());
     }
@@ -82,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
         repo.setDataSource(dataSource);
         return repo;
-    }
+    }*/
 
 }
 

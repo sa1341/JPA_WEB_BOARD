@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Controller
 public class MemberController {
 
     private final MemberRepository memberRepository;

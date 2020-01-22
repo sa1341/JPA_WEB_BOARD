@@ -2,22 +2,20 @@ package com.jun.jpacommunity.controller;
 
 
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.domain.Member;
-import com.jun.jpacommunity.dto.BoardDto;
+import com.jun.jpacommunity.domain.User;
 import com.jun.jpacommunity.dto.BoardForm;
+import com.jun.jpacommunity.exception.UserNotFoundException;
+import com.jun.jpacommunity.repository.UserRepository;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,15 +24,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BoardRestController {
 
-    @Autowired
+
     private final BoardService boardService;
 
-    @Autowired
     private final MemberService memberService;
 
+    private final UserRepository userRepository;
 
 
-    @GetMapping("/v1")
+/*    @GetMapping("/v1")
     public List<BoardDto> getAllBoardWithMembers(){
 
         List<Board> boards = boardService.getAllBoardWithMembers();
@@ -43,9 +41,9 @@ public class BoardRestController {
                 .collect(Collectors.toList());
 
         //when
-        boardDtos.forEach(b -> System.out.println(b.getId() +" " +b.getTitle() + " " + b.getMemberId() +" " + b.getCreatedAt() + " " + b.getUpdateAt()));
+        boardDtos.forEach(b -> System.out.println(b.getId() +" " +b.getTitle() + " " + b.getEmail() +" " + b.getCreatedAt() + " " + b.getUpdateAt()));
         return boardDtos;
-    }
+    }*/
 
 
     @PostMapping
@@ -58,9 +56,10 @@ public class BoardRestController {
         log.info("" + boardForm.getTitle());
         log.info("" + boardForm.getContent());
 
-        Member findMember = memberService.findById(boardForm.getWriter());
+        User findUser = userRepository.findByEmail(boardForm.getWriter().trim()).
+                orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다. email =" + boardForm.getWriter()));
 
-        boardForm.setMember(findMember);
+        boardForm.setUser(findUser);
         Board board = boardForm.toEntity();
 
         boardService.save(board);

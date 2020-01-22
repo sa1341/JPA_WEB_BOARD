@@ -3,10 +3,9 @@ package com.jun.jpacommunity.controller;
 import com.jun.jpacommunity.domain.Board;
 import com.jun.jpacommunity.domain.Member;
 import com.jun.jpacommunity.domain.Reply;
+import com.jun.jpacommunity.dto.JobTicket;
 import com.jun.jpacommunity.dto.ReplyDto;
 import com.jun.jpacommunity.dto.ReplyResponse;
-import com.jun.jpacommunity.repository.BoardRepository;
-import com.jun.jpacommunity.repository.ReplyRepository;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
 import com.jun.jpacommunity.service.ReplyService;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -99,6 +97,8 @@ public class ReplyRestController {
 
         return new ResponseEntity<>(getListByBoard(findBoard), HttpStatus.OK);
     }
+
+
 
 
 }

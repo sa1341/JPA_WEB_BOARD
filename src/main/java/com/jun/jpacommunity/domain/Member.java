@@ -1,6 +1,5 @@
 package com.jun.jpacommunity.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(exclude = "boards")
 public class Member {
-
 
     @Id
     @Column(name = "member_id")
@@ -31,10 +28,10 @@ public class Member {
     private String email;
 
     private int age;
-    @JsonIgnore
+  /*  @JsonIgnore
     @OneToMany(mappedBy = "member")
     List<Board> boards = new ArrayList<Board>();
-
+*/
     @BatchSize(size = 100)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "member")
@@ -47,6 +44,19 @@ public class Member {
     @UpdateTimestamp
     @Column(name = "sys_update_date", nullable = false)
     private Timestamp updatedAt;
+
+
+    @Builder
+    public Member(String uname, String email) {
+        this.uname = uname;
+        this.email = email;
+    }
+
+    public Member update(String name){
+        this.uname = name;
+
+        return this;
+    }
 
 
 }

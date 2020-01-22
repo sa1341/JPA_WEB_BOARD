@@ -1,10 +1,9 @@
 package com.jun.jpacommunity.controller;
 
+import com.jun.jpacommunity.configuration.auth.LoginUser;
 import com.jun.jpacommunity.domain.Board;
-import com.jun.jpacommunity.dto.BoardResponse;
-import com.jun.jpacommunity.dto.BoardValidForm;
-import com.jun.jpacommunity.dto.PageMaker;
-import com.jun.jpacommunity.dto.PageVO;
+import com.jun.jpacommunity.dto.*;
+import com.jun.jpacommunity.repository.BoardRepository;
 import com.jun.jpacommunity.repository.BoardSearch;
 import com.jun.jpacommunity.service.BoardService;
 import com.jun.jpacommunity.service.MemberService;
@@ -30,6 +29,7 @@ public class BoardController {
 
     private final MemberService memberService;
 
+    private final BoardRepository boardRepository;
 
     //폼 검증용 뷰잉
     @GetMapping("/valid")
@@ -51,15 +51,21 @@ public class BoardController {
 
     // 게시글 id로 조회시 호출  이 부분을 수정 폼, 상세 조회 폼, 게시글 등록 폼을 어떻게 설계하고 나눌지 고민하기.
     @GetMapping("/view")
-    public String board(@RequestParam(value ="id") Long id, Model model){
+    public String board(@RequestParam(value ="id") Long id, Model model, @LoginUser SessionUser sessionUser){
         BoardResponse boardResponse = new BoardResponse(boardService.findBoardById(id));
         log.info("" + boardResponse.getWriter() + " " + boardResponse.getContent());
+
+        model.addAttribute("username", sessionUser.getEmail());
         model.addAttribute("boardForm", boardResponse);
         return "board/view";
     }
 
     @GetMapping("/writeArticle")
-    public String writeArticle(){
+    public String writeArticle(@LoginUser SessionUser user, Model model){
+        if(user != null){
+            model.addAttribute("usermail", user.getEmail());
+        }
+
         return "board/boardForm";
     }
 
@@ -67,13 +73,18 @@ public class BoardController {
     @GetMapping("/list")
     public String boardList(PageVO pageVO, Model model, @ModelAttribute("boardSearch") BoardSearch boardSearch){
 
-
+     /*   if(user != null){
+            log.info("" + user.getName() + " " + user.getEmail());
+            model.addAttribute("username", user);
+        }
+*/
         // 페이징 처리에 필요한 정보를 제공함.
         // 표현계층에서 정렬 방향과 정렬 대상을 처리하는 부분
         Pageable page = pageVO.makePageable(0,"id");
 
         //Page<T> 타입을 이용하면 Spring MV와 연동할 때 상당한 편리함을 제공해줍니다. 단순 데이터 추출용도가 아니고 웹에서 필요한 데이터들을 추가적으로 처리해줌.
         Page<Board> boards = boardService.findAll(boardService.makePredicate(boardSearch), page);
+        //List<Board> boards = boardRepository.findAllBoardWithUser(boardService.makePredicate(boardSearch), page);
 
         log.info("" + page);
         log.info("" + boards);

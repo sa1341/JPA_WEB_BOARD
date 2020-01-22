@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Board Form</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 <body>
 <h1>Index Page For Everyone!!</h1>
+
+<form action="/pg/conv/insertDoc" id="convert">
+    <div class="form-group">
+        <input type="text" class="form-control" id="srcFile" placeholder="원본 파일 경로를 입력하세요">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" id="destFile" placeholder="업로드할 경로를 입력하세요"/>
+    </div>
+    <div class="form-group">
+        <input type="text"  class="form-control" id="jobId" placeholder="jobId를 입력하세요"/>
+    </div>
+    <button type="button" id="insert" class="btn btn-primary">변환 요청</button>
+    <button type="button" id="viewStatus" class="btn btn-primary">상태값 조회</button>
+</form>
+
+
+<script>
+    alert('good job!!');
+
+    $('#insert').click(function () {
+
+        var jsonData = JSON.stringify({
+            jobId: $('#srcFile').val(),
+            srcFile: $('#destFile').val(),
+            destFile: $('#jobId').val()
+        });
+
+        $.ajax({
+            url: "http://localhost:8080/convJob",
+            type: "POST",
+            data: jsonData,
+            contentType: "application/json",
+            success: function (data, status,xhr) {
+                alert('요청 성공!' + data);
+            },
+            error: function (xhr, status) {
+                alert('내용을 입력하셔야 합니다.');
+                console.log(xhr);
+                console.log(status);
+            }
+        });
+    });
+
+
+
+
+
+
+</script>
+
 </body>
 </html>

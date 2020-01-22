@@ -10,12 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class JpacommunityApplication {
 
-    private static final String PROPERTIES = "spring.config.location=classpath:/google.yml";
-    private static final String APPLICATION = "spring.config.location=classpath:/application.yml";
+    private static final String PROPERTIES =
+            "spring.config.location="
+            +"classpath:/application.properties";
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(JpacommunityApplication.class)
-                .properties(PROPERTIES,APPLICATION)
+                .properties(PROPERTIES)
                 .run(args);
     }
 
